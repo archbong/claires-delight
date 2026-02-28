@@ -5,8 +5,7 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client"
-  output   = "../generated/prisma"
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -96,6 +95,8 @@ enum ContentType {
 model User {
   id        String   @id @default(uuid())
   username  String   @unique
+  firstname String
+  lastname  String
   email     String   @unique
   password  String?
   image     String?
