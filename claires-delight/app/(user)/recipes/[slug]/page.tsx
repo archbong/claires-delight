@@ -38,7 +38,7 @@ export default async function Page({ params }: RecipePageParams) {
     <>
       <Navbar />
       <BodyWrapper>
-        <div className="text-sm breadcrumbs">
+        <div className="flex flex-wrap flex-col text-sm breadcrumbs">
           <ul>
             <li>
               <Link href="/recipes">Recipes</Link>

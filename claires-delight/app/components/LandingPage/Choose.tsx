@@ -25,7 +25,7 @@ function Choose() {
   }, []);
 
   return (
-    <div className="mt-10 md:mt-10 lg:mt-10"
+    <div className="mt-10"
     style={{
       backgroundImage: `url('https://res.cloudinary.com/dzd51q99i/image/upload/v1722039604/clairesdelight/why-choose-us/Image_2_iznayf.png')`,
       backgroundSize: 'cover',
@@ -37,8 +37,8 @@ function Choose() {
           "At our spice website, we prioritize quality, flavor, and purity, ensuring each product adds an exceptional touch to your dishes"
         }{" "}
       </Paragraph>
-      <div className="flex flex-col-reverse md:flex-row md:justify-center items-center md:mx-8 xl:mx-12 mt-7 gap-6 md:gap-6 lg:gap-8">
-        <p className="w-full md:max-w-[420px] lg:max-w-[500px] xl:max-w-[560px] text-[13px] md:text-[12px] lg:text-[13px] xl:text-[15px] leading-[14px] lg:leading-[24px] text-center md:text-start">
+      <div className="flex flex-col-reverse md:flex-row md:justify-center items-center md:mx-8 xl:mx-12 mt-7 gap-5 lg:gap-20">
+        <p className="w-full md:max-w-[420px] lg:max-w-[500px] xl:max-w-[471px] text-[13px] md:text-[12px] lg:text-[13px] xl:text-[15px] leading-[14px] lg:leading-[24px] text-center md:text-start">
           In every jar and packet from Claire&apos;s Delight, you&apos;ll find
           more than just spices. You&apos;ll find a commitment to excellence.
           Each herb and spice is selected with the utmost care, ensuring they
@@ -53,8 +53,8 @@ function Choose() {
           <Image
             src={slides[currentSlide]}
             alt="Slide"
-            width={500}
-            height={500}
+            width={800}
+            height={800}
             style={{
               objectFit: "cover",
               objectPosition: "center",

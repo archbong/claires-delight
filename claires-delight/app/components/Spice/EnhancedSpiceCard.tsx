@@ -125,14 +125,14 @@ const setCartError = useCartStore((s) => s.setError);
     return (
       <div className={`group ${className}`}>
         <div
-          className="relative bg-white rounded-xl shadow-sm border border-primaryGrey hover:shadow-xl transition-all duration-300 hover:border-green/30 overflow-hidden h-full flex flex-col"
+          className="relative bg-white rounded-xl border border-primaryGrey hover:shadow-xl transition-all duration-300 hover:border-green/30 overflow-hidden h-full flex flex-col"
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
           role="article"
           aria-label={`Product: ${product.name}`}
         >
           {/* Image Container */}
-          <figure className="bg-lighterGreen p-4 flex-1 flex flex-col relative">
+          <figure className="p-4 flex-1 flex flex-col relative">
             {/* Action Buttons Overlay */}
             <div
               className={`absolute top-3 right-3 z-10 flex flex-col gap-2 transition-all duration-300 ${
@@ -178,7 +178,7 @@ const setCartError = useCartStore((s) => s.setError);
             {/* Product Image */}
             <div className="relative w-full aspect-square overflow-hidden rounded-lg">
               {!imageLoaded && (
-                <div className="absolute inset-0 bg-gray-200 animate-pulse rounded-lg" />
+                <div className="absolute inset-0 bg-gray-200 animate-pulse " />
               )}
               <Image
                 src={imageSrc}
@@ -200,7 +200,7 @@ const setCartError = useCartStore((s) => s.setError);
               href={`/shop-spices/${product.slug}`}
               className="flex-1 group/link"
             >
-              <h2 className="text-customBlack font-semibold text-base sm:text-lg md:text-base lg:text-lg hover:text-orange transition-colors duration-200 line-clamp-2 mb-2 group-hover/link:underline">
+              <h2 className="text-customBlack font-semibold text-base sm:text-lg md:text-base lg:text-lg hover:text-orange transition-colors duration-200 line-clamp-2 mb-2">
                 {product.name}
               </h2>
             </Link>
@@ -235,7 +235,7 @@ const setCartError = useCartStore((s) => s.setError);
                   </span>
                 ) : (
                   <span className="flex items-center gap-1">
-                    <FiShoppingCart className="w-4 h-4" />
+                    {/* <FiShoppingCart className="w-4 h-4" /> */}
                     <span className="hidden sm:inline">Add to Cart</span>
                     <span className="sm:hidden">Add</span>
                   </span>
@@ -359,7 +359,6 @@ const setCartError = useCartStore((s) => s.setError);
                   </span>
                 ) : (
                   <span className="flex items-center gap-1">
-                    <FiShoppingCart className="w-4 h-4" />
                     Add to Cart
                   </span>
                 )}

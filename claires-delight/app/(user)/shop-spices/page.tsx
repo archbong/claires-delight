@@ -7,6 +7,7 @@ import Navbar from "@/app/components/header/navbar/Navbar";
 import EnhancedSpiceList from "@/app/components/Spice/EnhancedSpiceList";
 import SearchProductResults from "@/app/components/Spice/SearchProductResult";
 import { useProductsStore } from "@/app/store/productsStore";
+import Banner from "@/app/components/banner/Banner";
 
 export default function Page() {
   const searchTerm = useProductsStore((state) => state.searchTerm);
@@ -24,7 +25,7 @@ export default function Page() {
         <SearchProductResults results={searchResults} />
       ) : (
         <>
-          <section
+          {/* <section
             className="mt-20 px-4 sm:px-6 lg:px-8 py-16 text-white bg-cover bg-center"
             style={{ backgroundImage: `url(${spiceBanner})` }}
           >
@@ -44,7 +45,13 @@ export default function Page() {
                 Explore Our Collection
               </button>
             </div>
-          </section>
+          </section> */}
+          <Banner
+            image={spiceBanner}
+            title={`Shop Spices`}
+            subtitle={`Check out our spice shop for all your cooking needs.
+               Find the perfect flavors to make your meals delicious.`}
+            />
           <ErrorBoundary>
             <EnhancedSpiceList enableInfiniteScroll={true} />
           </ErrorBoundary>

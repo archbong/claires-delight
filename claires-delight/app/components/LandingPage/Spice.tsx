@@ -1,7 +1,6 @@
 "use client";
 
-import Loading from "@/app/loading";
-import { Suspense, useEffect } from "react";
+import { Suspense } from "react";
 import Title from "../typography/Title";
 import Paragraph from "../typography/Paragraph";
 import EnhancedSpiceCard from "../Spice/EnhancedSpiceCard";

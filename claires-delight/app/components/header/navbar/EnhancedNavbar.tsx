@@ -227,13 +227,13 @@ const EnhancedNavbar: React.FC<EnhancedNavbarProps> = ({ onSearch }) => {
       {/* Enhanced Navbar with smooth transitions */}
       <header
         className={cn(
-          "fixed top-0 w-full z-50 transition-all duration-500 ease-out",
-          "backdrop-blur-md supports-backdrop-blur:bg-white/90",
-          isScrolled
-            ? "bg-white/95 shadow-lg border-b border-gray-100"
-            : "bg-white/80 border-b border-transparent",
-        )}
-        role="banner"
+  "fixed top-0 w-full z-50 transition-all duration-500 ease-out",
+  "backdrop-blur-md supports-backdrop-blur:bg-white/90",
+  isScrolled
+    ? "shadow-lg border-b border-gray-100"
+    : "border-b border-transparent",
+    "bg-white/95 hover:bg-green/65",
+)}  role="banner"
         aria-label="Main navigation"
       >
         <div className="responsive-container">
@@ -344,14 +344,21 @@ const EnhancedNavbar: React.FC<EnhancedNavbarProps> = ({ onSearch }) => {
               {/* Contact Button */}
               <div className="hidden md:block">
                 <Link href="/contact">
-                  <Button
-                    variant="primary"
+                  {/* <Button
+                  
                     size="sm"
-                    className="whitespace-nowrap"
+                    className="whitespace-nowrap bg-orange"
                     aria-label="Contact us"
                   >
                     Contact Us
-                  </Button>
+                  </Button> */}
+                  <button
+                    type="submit"
+                    className="btn w-[150px] h-[50px] bg-orange text-white"
+                    // disabled={loading}
+                  >
+                    Contact Us 
+                  </button>
                 </Link>
               </div>
 
@@ -381,7 +388,7 @@ const EnhancedNavbar: React.FC<EnhancedNavbarProps> = ({ onSearch }) => {
           </div>
 
           {/* Mobile Navigation Dropdown */}
-          {isMobileMenuOpen && (
+          {/* {isMobileMenuOpen && (
             <div className="lg:hidden border-t border-gray-200 mt-2 pt-4 pb-4 bg-white rounded-lg shadow-lg">
               <nav
                 className="flex flex-col space-y-3"
@@ -416,7 +423,7 @@ const EnhancedNavbar: React.FC<EnhancedNavbarProps> = ({ onSearch }) => {
                 </div>
               </nav>
             </div>
-          )}
+          )} */}
         </div>
       </header>
 
