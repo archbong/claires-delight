@@ -26,8 +26,8 @@ const Spice = () => {
         distinctive taste
       </Paragraph>
 
-      <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-10 mt-5 mb-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 justify-items-center">
+      <div className="max-w-7xl mx-auto mt-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {products.map((product: any) => (
             <EnhancedSpiceCard
               key={product._id}

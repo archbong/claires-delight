@@ -17,73 +17,77 @@ export default function RecipeDetail({ item }: any) {
 
   return (
     <>
-      <section className="rounded-3xl border border-primaryGrey/60 bg-white/90 p-4 sm:p-6 lg:p-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
-        <Suspense>
-          <Image
-            src={item?.image}
-            alt={item?.title}
-            width={800}
-            height={500}
-            loading="lazy"
-            className="rounded-3xl border border-primaryGrey/40"
-            style={{ objectFit: "cover", width: "100%", height: "auto" }}
-          />
-        </Suspense>
-        <div className="space-y-5">
-          <SpiceTitle title={item?.title} />
-          <p className="text-tertiaryGrey leading-7">{item?.description}</p>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <div className="rounded-xl bg-[#FFF8F6] border border-primaryGrey/50 p-3">
-              <p className="text-xs uppercase text-tertiaryGrey">Difficulty</p>
-              <p className="font-semibold text-customBlack">{item?.difficulty ?? "Medium"}</p>
+      <section className="rounded-2xl bg-white p-4 sm:p-6 lg:p-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
+          <Suspense>
+            <Image
+              src={item?.image}
+              alt={item?.title}
+              width={800}
+              height={500}
+              loading="lazy"
+              className="rounded-2xl"
+              style={{ objectFit: "cover", width: "100%", height: "auto" }}
+            />
+          </Suspense>
+
+          <div className="space-y-4">
+            {/* Title */}
+            <SpiceTitle title={item?.title} />
+
+            {/* Description */}
+            <p className="text-tertiaryGrey leading-7 text-sm">{item?.description}</p>
+
+            {/* Stats row — subtle, inline */}
+            <p className="text-sm text-tertiaryGrey">
+              <span className="font-semibold text-customBlack">Difficulty:</span> {item?.difficulty ?? "Medium"}&ensp;·&ensp;
+              <span className="font-semibold text-customBlack">Servings:</span> {item?.servings ?? "—"}&ensp;·&ensp;
+              <span className="font-semibold text-customBlack">Cook Time:</span> {item?.cookTime ?? "—"} min
+            </p>
+
+            {/* Ingredients */}
+            <div>
+              <h3 className="font-bold text-lg text-customBlack mb-2">Ingredients:</h3>
+              <ul className="space-y-1 text-sm text-tertiaryGrey leading-6 list-disc list-inside">
+                {ingredients.map((ingredient: string, index: number) => (
+                  <li key={index}>{ingredient},</li>
+                ))}
+              </ul>
             </div>
-            <div className="rounded-xl bg-[#FFF8F6] border border-primaryGrey/50 p-3">
-              <p className="text-xs uppercase text-tertiaryGrey">Servings</p>
-              <p className="font-semibold text-customBlack">{item?.servings ?? "-"}</p>
-            </div>
-            <div className="rounded-xl bg-[#FFF8F6] border border-primaryGrey/50 p-3">
-              <p className="text-xs uppercase text-tertiaryGrey">Cook Time</p>
-              <p className="font-semibold text-customBlack">{item?.cookTime ?? "-"} min</p>
+
+            {/* Method */}
+            <div>
+              <h3 className="font-bold text-lg text-customBlack mb-2">Method:</h3>
+              <p className="text-sm text-tertiaryGrey leading-7">
+                {methods.join(" ")}
+              </p>
             </div>
           </div>
-          <h3 className="font-bold pt-2 text-2xl text-customBlack">Ingredients</h3>
-          <ul className="space-y-2">
-            {ingredients.map((ingredient: string, index: number) => (
-              <li key={index} className="rounded-lg border border-primaryGrey/40 bg-[#fcfcfc] px-3 py-2">
-                {ingredient}
-              </li>
-            ))}
-          </ul>
-          <h3 className="font-bold pt-2 text-2xl text-customBlack">Method</h3>
-          <ol className="space-y-2">
-            {methods.map((step: string, index: number) => (
-              <li
-                key={index}
-                className="rounded-lg border border-primaryGrey/40 bg-white px-3 py-2 flex gap-3"
-              >
-                <span className="font-semibold text-orange min-w-5">{index + 1}.</span>
-                <span>{step}</span>
-              </li>
-            ))}
-          </ol>
-        </div>
         </div>
       </section>
-      <div className="my-12">
-        <Title>{"Best Selling Spices"}</Title>
+      {/* Best Selling Spices  */}
+      <div className="my-12 text-center">
+        <div className="flex items-center justify-center gap-3 mb-3">
+          <span className="block w-16 h-px bg-green" />
+          <Title>{"Best Selling Spices"}</Title>
+          <span className="block w-16 h-px bg-green" />
+        </div>
         <Paragraph>
-          Recommended spices for you. Make a tasty and decilious meal using any
+          Recommended spices for you. Make a tasty and delicious meal using any
           of our spices. It is of a good quality and it is affordable
         </Paragraph>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 place-items-center place-content-center">
-        {productSlice?.map((product: Product) => (
-          <Suspense key={product._id}>
-            <EnhancedSpiceCard product={product} />
-          </Suspense>
-        ))}
+      <div className="max-w-7xl mx-auto mt-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {productSlice?.map((product: Product) => (
+            <Suspense key={product._id}>
+              <EnhancedSpiceCard product={product} />
+            </Suspense>
+          ))}
+        </div>
       </div>
     </>
+
+
   );
 }

@@ -123,147 +123,101 @@ const setCartError = useCartStore((s) => s.setError);
   // Grid variant layout
   if (variant === "grid") {
     return (
-      <div className={`group ${className}`}>
-        <div
-          className="relative bg-white rounded-xl border border-primaryGrey hover:shadow-xl transition-all duration-300 hover:border-green/30 overflow-hidden h-full flex flex-col"
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-          role="article"
-          aria-label={`Product: ${product.name}`}
+     <div className={`group ${className}`}>
+  <div
+    className="relative bg-[#EEF4FB] rounded-2xl overflow-hidden h-full flex flex-col transition-all duration-300 hover:shadow-lg border border-dashed border-primaryGrey/40"
+    onMouseEnter={() => setIsHovered(true)}
+    onMouseLeave={() => setIsHovered(false)}
+    role="article"
+    aria-label={`Product: ${product.name}`}
+  >
+    {/* Action Buttons Overlay */}
+    <div
+      className={`absolute top-3 right-3 z-10 flex flex-col gap-2 transition-all duration-300 ${
+        isHovered ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2"
+      }`}
+    >
+      {showWishlist && (
+        <button
+          onClick={handleWishlistToggle}
+          disabled={wishlistLoading}
+          className={`w-9 h-9 rounded-full flex items-center justify-center transition-all duration-200 ${
+            isWishlisted
+              ? "bg-red text-white shadow-lg"
+              : "bg-white text-customBlack hover:bg-red hover:text-white shadow-md"
+          } hover:scale-110 active:scale-95 disabled:opacity-50`}
+          aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
         >
-          {/* Image Container */}
-          <figure className="p-4 flex-1 flex flex-col relative">
-            {/* Action Buttons Overlay */}
-            <div
-              className={`absolute top-3 right-3 z-10 flex flex-col gap-2 transition-all duration-300 ${
-                isHovered
-                  ? "opacity-100 translate-y-0"
-                  : "opacity-0 -translate-y-2"
-              }`}
-            >
-              {showWishlist && (
-                <button
-                  onClick={handleWishlistToggle}
-                  disabled={wishlistLoading}
-                  className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200 ${
-                    isWishlisted
-                      ? "bg-red text-white shadow-lg"
-                      : "bg-white text-customBlack hover:bg-red hover:text-white shadow-md"
-                  } hover:scale-110 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed`}
-                  aria-label={
-                    isWishlisted ? "Remove from wishlist" : "Add to wishlist"
-                  }
-                >
-                  {wishlistLoading ? (
-                    <span className="loading loading-spinner loading-xs" />
-                  ) : (
-                    <FiHeart
-                      className={`w-5 h-5 ${isWishlisted ? "fill-current" : ""}`}
-                    />
-                  )}
-                </button>
-              )}
+          {wishlistLoading ? (
+            <span className="loading loading-spinner loading-xs" />
+          ) : (
+            <FiHeart className={`w-4 h-4 ${isWishlisted ? "fill-current" : ""}`} />
+          )}
+        </button>
+      )}
+    </div>
 
-              {showQuickView && (
-                <button
-                  onClick={handleQuickView}
-                  className="w-10 h-10 rounded-full bg-white text-customBlack flex items-center justify-center hover:bg-green hover:text-white transition-all duration-200 shadow-md hover:scale-110 active:scale-95"
-                  aria-label="Quick view"
-                >
-                  <FiEye className="w-5 h-5" />
-                </button>
-              )}
-            </div>
+    {/* Product Image — full bleed, no inner box */}
+    <div className="relative w-full aspect-[4/3] overflow-hidden">
+      {!imageLoaded && (
+        <div className="absolute inset-0 bg-blue-100 animate-pulse" />
+      )}
+      <Image
+        src={imageSrc}
+        alt={`${product.name} - Claire's Delight Spice`}
+        fill
+        className={`object-contain transition-transform duration-500 ${
+          isHovered ? "scale-105" : "scale-100"
+        } ${imageLoaded ? "opacity-100" : "opacity-0"}`}
+        sizes="(max-width: 768px) 100vw, 33vw"
+        loading="lazy"
+        onLoad={handleImageLoad}
+      />
+    </div>
 
-            {/* Product Image */}
-            <div className="relative w-full aspect-square overflow-hidden rounded-lg">
-              {!imageLoaded && (
-                <div className="absolute inset-0 bg-gray-200 animate-pulse " />
-              )}
-              <Image
-                src={imageSrc}
-                alt={`${product.name} - Claire's Delight Spice`}
-                fill
-                className={`object-cover transition-transform duration-500 ${
-                  isHovered ? "scale-105" : "scale-100"
-                } ${imageLoaded ? "opacity-100" : "opacity-0"}`}
-                sizes="(max-width: 480px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                loading="lazy"
-                onLoad={handleImageLoad}
-              />
-            </div>
-          </figure>
+    {/* Content */}
+    <div className="px-5 pt-4 pb-5 flex flex-col gap-4 bg-white">
+      <Link href={`/shop-spices/${product.slug}`}>
+        <h2 className="text-customBlack font-bold text-xl hover:text-orange transition-colors duration-200 line-clamp-2">
+          {product.name}
+        </h2>
+      </Link>
 
-          {/* Content */}
-          <div className="p-4 flex flex-col flex-1">
-            <Link
-              href={`/shop-spices/${product.slug}`}
-              className="flex-1 group/link"
-            >
-              <h2 className="text-customBlack font-semibold text-base sm:text-lg md:text-base lg:text-lg hover:text-orange transition-colors duration-200 line-clamp-2 mb-2">
-                {product.name}
-              </h2>
-            </Link>
-
-            {/* Price and Add to Cart */}
-            <div className="flex justify-between items-center mt-auto pt-3">
-              <p className="text-customBlack font-bold text-lg sm:text-xl md:text-lg lg:text-xl">
-                {formatNaira(product?.price)}
-              </p>
-              <button
-                className={`
-                  btn font-medium text-white border-none transition-all duration-200
-                  min-h-9 sm:min-h-10 px-3 sm:px-4 text-sm sm:text-base
-                  disabled:opacity-50 disabled:cursor-not-allowed
-                  relative overflow-hidden
-                  ${showSuccess ? "bg-green scale-105" : "bg-orange hover:bg-green"}
-                  ${cartLoading ? "animate-pulse" : ""}
-                `}
-                style={{ transform: `scale(${buttonScale})` }}
-                onClick={() => handleAddToCart(product)}
-                disabled={cartLoading || isAddingToCart}
-                onMouseEnter={() => handleButtonHover(true)}
-                onMouseLeave={() => handleButtonHover(false)}
-                aria-label={`Add ${product.name} to cart`}
-              >
-                {cartLoading || isAddingToCart ? (
-                  <span className="loading loading-spinner loading-xs sm:loading-sm" />
-                ) : showSuccess ? (
-                  <span className="flex items-center gap-1 animate-bounce">
-                    <FiCheck className="w-4 h-4" />
-                    <span className="hidden sm:inline">Added!</span>
-                  </span>
-                ) : (
-                  <span className="flex items-center gap-1">
-                    {/* <FiShoppingCart className="w-4 h-4" /> */}
-                    <span className="hidden sm:inline">Add to Cart</span>
-                    <span className="sm:hidden">Add</span>
-                  </span>
-                )}
-
-                {/* Ripple effect */}
-                {showSuccess && (
-                  <span className="absolute inset-0 bg-white opacity-20 animate-ping rounded-full" />
-                )}
-              </button>
-            </div>
-
-            {/* Error message */}
-            {cartError && (
-              <div className="mt-2 p-2 bg-red-50 border border-red-200 rounded-lg">
-                <p className="text-red-600 text-xs text-center">
-                  {cartError}
-                </p>
-              </div>
-            )}
-          </div>
-
-          {/* Hover effect overlay */}
-          <div
-            className={`absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none rounded-xl`}
-          />
-        </div>
+      <div className="flex justify-between items-center">
+        <p className="text-customBlack font-extrabold text-2xl">
+          {formatNaira(product?.price)}
+        </p>
+        <button
+          className={`
+            rounded-xl font-medium text-white border-none px-6 py-3 text-sm
+            transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed
+            ${showSuccess ? "bg-green" : "bg-orange hover:bg-green"}
+            ${cartLoading ? "animate-pulse" : ""}
+          `}
+          onClick={() => handleAddToCart(product)}
+          disabled={cartLoading || isAddingToCart}
+          aria-label={`Add ${product.name} to cart`}
+        >
+          {cartLoading || isAddingToCart ? (
+            <span className="loading loading-spinner loading-xs" />
+          ) : showSuccess ? (
+            <span className="flex items-center gap-1">
+              <FiCheck className="w-4 h-4" /> Added!
+            </span>
+          ) : (
+            "Add To Cart"
+          )}
+        </button>
       </div>
+
+      {cartError && (
+        <p className="text-red-600 text-xs text-center bg-red-50 rounded-lg p-2">
+          {cartError}
+        </p>
+      )}
+    </div>
+  </div>
+</div>
     );
   }
 

@@ -12,12 +12,9 @@ export default function Footer() {
   return (
     <footer className="hidden lg:block">
       <div
-        className=" pt-[4rem] pb-[2rem] px-[4rem] bg-white"
+        className=" pt-[4rem] pb-[2rem] px-[4rem] bg-white/95 hover:bg-green/65"
         onMouseEnter={() => setHover(true)}
         onMouseLeave={() => setHover(false)}
-        style={{
-          backgroundColor: hover ? "bg-lightGreen" : "white",
-        }}
       >
         <div className="grid lg:grid-cols-4  justify-between xl:space-x-[10rem] lg:space-x-[5rem] md:space-x-[4rem] ">
           <FooterLogo hover={hover} />

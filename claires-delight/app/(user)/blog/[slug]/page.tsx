@@ -4,6 +4,7 @@ import Navbar from "@/app/components/header/navbar/Navbar";
 import ResponsiveFooter from "@/app/components/footer/responsive/ResponsiveFooter";
 import PostDetail from "@/app/components/blog/PostDetail";
 import { getPost } from "@/lib/data";
+import Breadcrumb from "@/app/components/Breadcrumb";
 
 export const generateMetadata = async ({ params }: { params: Promise<{ slug: string }> }) => {
   const { slug } = await params;
@@ -35,15 +36,13 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
     <>
       <Navbar />
       <BodyWrapper>
-        <div className="text-sm breadcrumbs">
-          <ul>
-            <li>
-              <Link href="/blog">Blog</Link>
-            </li>
-            <li>Trending</li>
-            <li className="font-bold">ALL</li>
-          </ul>
-        </div>
+        <Breadcrumb
+          items={[
+            { label: "Home", href: "/" },
+            { label: "Blog", href: "/blog" },
+            { label: post.title },
+          ]}
+        />
 
         <PostDetail post={post} />
       </BodyWrapper>

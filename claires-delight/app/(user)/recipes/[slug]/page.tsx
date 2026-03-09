@@ -4,6 +4,7 @@ import { getRecipe } from "@/lib/data";
 import Navbar from "@/app/components/header/navbar/Navbar";
 import ResponsiveFooter from "@/app/components/footer/responsive/ResponsiveFooter";
 import RecipeDetail from "@/app/components/recipe/RecipeDetail";
+import Breadcrumb from "@/app/components/Breadcrumb";
 
 type RecipePageParams = {
   params: Promise<{ slug: string }>;
@@ -38,15 +39,13 @@ export default async function Page({ params }: RecipePageParams) {
     <>
       <Navbar />
       <BodyWrapper>
-        <div className="flex flex-wrap flex-col text-sm breadcrumbs">
-          <ul>
-            <li>
-              <Link href="/recipes">Recipes</Link>
-            </li>
-            <li>All Recipes</li>
-            <li>{recipe.title}</li>
-          </ul>
-        </div>
+        <Breadcrumb
+          items={[
+            { label: "Recipes", href: "/recipes" },
+            { label: "All Recipes", href: "/recipes" },
+            { label: "Authentic Chicken Biryani" },
+          ]}
+        />
         <RecipeDetail item={recipe} />
       </BodyWrapper>
       <ResponsiveFooter />

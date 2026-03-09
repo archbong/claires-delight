@@ -119,147 +119,115 @@ const EnhancedSpiceList: React.FC<EnhancedSpiceListProps> = ({
   }
 
   return (
-    <BodyWrapper>
-      <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
-        {isMobile && (
-          <MobileFilterHeader
-            appliedFilters={appliedFilters}
-            onClearAll={handleClearAllFilters}
-            onRemoveFilter={handleRemoveFilter}
-            onOpenFilters={handleOpenFilters}
-            resultsCount={filteredProducts.length}
-          />
-        )}
+  <BodyWrapper>
+    <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
+      {isMobile && (
+        <MobileFilterHeader
+          appliedFilters={appliedFilters}
+          onClearAll={handleClearAllFilters}
+          onRemoveFilter={handleRemoveFilter}
+          onOpenFilters={handleOpenFilters}
+          resultsCount={filteredProducts.length}
+        />
+      )}
 
-        <div className="lg:w-64 flex-shrink-0">
-          <EnhancedProductFilter
-            onFilter={handleFilterChange}
-            isMobile={isMobile}
-            onClearAll={handleClearAllFilters}
-          />
-        </div>
+      {/* Sidebar */}
+      <div className="lg:w-48 flex-shrink-0">
+        <EnhancedProductFilter
+          onFilter={handleFilterChange}
+          isMobile={isMobile}
+          onClearAll={handleClearAllFilters}
+        />
+      </div>
 
-        <div id="spices" className={`flex-1 pt-6 px-4 sm:px-6 lg:px-8 ${isMobile ? "mt-20" : ""}`}>
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-            <SpiceTitle title={`${isMobile ? "Spices" : "All Spices"} (${filteredProducts.length})`} />
-
-            <div className="flex items-center gap-4">
-              <button
-                onClick={() => setViewMode((prev) => (prev === "grid" ? "list" : "grid"))}
-                className="p-2 rounded-lg border border-primaryGrey hover:border-green hover:bg-lighterGreen transition-colors duration-200"
-                aria-label={`Switch to ${viewMode === "grid" ? "list" : "grid"} view`}
-              >
-                {viewMode === "grid" ? (
-                  <IoList className="w-5 h-5 text-tertiaryGrey" />
-                ) : (
-                  <IoGrid className="w-5 h-5 text-tertiaryGrey" />
-                )}
-              </button>
-
-              <div className="relative" ref={searchRef}>
-                {showSearchInput ? (
-                  <div className="flex items-center relative">
-                    <input
-                      id="navbar-search-input"
-                      type="text"
-                      name="search"
-                      className="w-40 sm:w-48 h-10 pl-4 pr-10 rounded-lg border border-secondaryGrey focus:outline-none focus:ring-2 focus:ring-green transition-all duration-200"
-                      placeholder="Search spices..."
-                      value={inputValue}
-                      onChange={handleSearchChange}
-                    />
-                    <IoSearch className="absolute right-3 h-5 w-5 text-tertiaryGrey" />
-                  </div>
-                ) : (
-                  <button
-                    onClick={() => setShowSearchInput(true)}
-                    className="p-2 rounded-lg border border-primaryGrey hover:border-green hover:bg-lighterGreen transition-colors duration-200"
-                    aria-label="Open search"
-                  >
-                    <IoSearch className="w-5 h-5 text-tertiaryGrey" />
-                  </button>
-                )}
+      {/* Main content */}
+      <div id="spices" className={`flex-1 ${isMobile ? "mt-20" : ""}`}>
+        
+        {/* Header: title left, search icon right */}
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="font-bold text-lg text-customBlack">
+            {isMobile ? "Spices" : "All Spices"} ({filteredProducts.length})
+          </h2>
+          <div className="relative" ref={searchRef}>
+            {showSearchInput ? (
+              <div className="flex items-center relative">
+                <input
+                  type="text"
+                  name="search"
+                  className="w-40 sm:w-48 h-9 pl-3 pr-9 rounded-lg border border-secondaryGrey focus:outline-none focus:ring-2 focus:ring-green text-sm transition-all duration-200"
+                  placeholder="Search spices..."
+                  value={inputValue}
+                  onChange={handleSearchChange}
+                  autoFocus
+                />
+                <IoSearch className="absolute right-2.5 h-4 w-4 text-tertiaryGrey" />
               </div>
-            </div>
-          </div>
-
-          <div className="mb-8">
-            {loading ? (
-              <ProductGridSkeleton count={ITEMS_PER_PAGE} />
             ) : (
-              <>
-                {viewMode === "grid" && (
-                  <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 md:gap-6">
-                    {displayedProducts.length > 0 ? (
-                      displayedProducts.map((product: Product) => (
-                        <Suspense key={product._id} fallback={<div className="animate-pulse bg-gray-200 rounded-lg h-80" />}>
-                          <EnhancedSpiceCard product={product} className="h-full" />
-                        </Suspense>
-                      ))
-                    ) : (
-                      <div className="col-span-full">
-                        <Suspense>
-                          <SpiceCardNotProduct />
-                        </Suspense>
-                      </div>
-                    )}
-                  </div>
-                )}
-
-                {viewMode === "list" && (
-                  <div className="space-y-4">
-                    {displayedProducts.length > 0 ? (
-                      displayedProducts.map((product: Product) => (
-                        <Suspense key={product._id} fallback={<div className="animate-pulse bg-gray-200 rounded-lg h-32" />}>
-                          <div className="flex flex-col sm:flex-row gap-4 p-4 bg-white rounded-xl border border-primaryGrey hover:shadow-lg transition-all duration-300">
-                            <EnhancedSpiceCard product={product} variant="list" className="w-full" />
-                          </div>
-                        </Suspense>
-                      ))
-                    ) : (
-                      <SpiceCardNotProduct />
-                    )}
-                  </div>
-                )}
-
-                {enableInfiniteScroll && hasMoreProducts && (
-                  <div className="flex justify-center mt-8">
-                    <button
-                      onClick={async () => {
-                        setIsLoadingMore(true);
-                        await new Promise((resolve) => setTimeout(resolve, 500));
-                        setCurrentPage((prev) => prev + 1);
-                        setIsLoadingMore(false);
-                      }}
-                      disabled={isLoadingMore}
-                      className="btn bg-green hover:bg-orange text-white border-none min-w-32"
-                    >
-                      {isLoadingMore ? <span className="loading loading-spinner loading-sm" /> : "Load More"}
-                    </button>
-                  </div>
-                )}
-
-                {isLoadingMore && (
-                  <div className="flex justify-center mt-6">
-                    <div className="animate-pulse text-tertiaryGrey">Loading more products...</div>
-                  </div>
-                )}
-              </>
+              <button
+                onClick={() => setShowSearchInput(true)}
+                aria-label="Open search"
+              >
+                <IoSearch className="w-5 h-5 text-tertiaryGrey hover:text-customBlack transition-colors" />
+              </button>
             )}
           </div>
+        </div>
 
-          {!enableInfiniteScroll && totalPages > 1 && (
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onNextPage={() => setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages))}
-              onPreviousPage={() => setCurrentPage((prevPage) => Math.max(prevPage - 1, 1))}
-            />
+        {/* Grid */}
+        <div className="mb-8">
+          {loading ? (
+            <ProductGridSkeleton count={ITEMS_PER_PAGE} />
+          ) : (
+            <>
+              <div className="grid grid-cols-2 gap-4">
+                {displayedProducts.length > 0 ? (
+                  displayedProducts.map((product: Product) => (
+                    <Suspense
+                      key={product._id}
+                      fallback={<div className="animate-pulse bg-orange/10 rounded-2xl h-56" />}
+                    >
+                      <EnhancedSpiceCard product={product} />
+                    </Suspense>
+                  ))
+                ) : (
+                  <div className="col-span-2">
+                    <Suspense><SpiceCardNotProduct /></Suspense>
+                  </div>
+                )}
+              </div>
+
+              {enableInfiniteScroll && hasMoreProducts && (
+                <div className="flex justify-center mt-8">
+                  <button
+                    onClick={async () => {
+                      setIsLoadingMore(true);
+                      await new Promise((resolve) => setTimeout(resolve, 500));
+                      setCurrentPage((prev) => prev + 1);
+                      setIsLoadingMore(false);
+                    }}
+                    disabled={isLoadingMore}
+                    className="btn bg-green hover:bg-orange text-white border-none min-w-32"
+                  >
+                    {isLoadingMore ? <span className="loading loading-spinner loading-sm" /> : "Load More"}
+                  </button>
+                </div>
+              )}
+            </>
           )}
         </div>
+
+        {!enableInfiniteScroll && totalPages > 1 && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onNextPage={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+            onPreviousPage={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+          />
+        )}
       </div>
-    </BodyWrapper>
-  );
+    </div>
+  </BodyWrapper>
+);
 };
 
 export default EnhancedSpiceList;

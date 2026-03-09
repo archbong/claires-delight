@@ -25,27 +25,7 @@ export default function Page() {
         <SearchProductResults results={searchResults} />
       ) : (
         <>
-          {/* <section
-            className="mt-20 px-4 sm:px-6 lg:px-8 py-16 text-white bg-cover bg-center"
-            style={{ backgroundImage: `url(${spiceBanner})` }}
-          >
-            <div className="max-w-4xl mx-auto text-center space-y-4 bg-black/40 p-6 rounded-xl">
-              <h1 className="text-3xl sm:text-4xl font-bold">Shop Premium Spices</h1>
-              <p className="text-sm sm:text-base">
-                Discover our hand-selected collection of organic spices from around the world.
-                Elevate your cooking with authentic flavors and aromas.
-              </p>
-              <button
-                className="btn bg-orange hover:bg-green text-white border-none"
-                onClick={() => {
-                  const spicesSection = document.getElementById("spices");
-                  spicesSection?.scrollIntoView({ behavior: "smooth" });
-                }}
-              >
-                Explore Our Collection
-              </button>
-            </div>
-          </section> */}
+         
           <Banner
             image={spiceBanner}
             title={`Shop Spices`}

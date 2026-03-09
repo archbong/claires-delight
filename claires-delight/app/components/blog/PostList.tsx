@@ -6,6 +6,7 @@ import BodyWrapper from "@/app/components/layout/BodyWrapper";
 import Pagination from "@/app/components/pagination/Pagination";
 import PostCard from "@/app/components/blog/PostCard";
 import { BlogPost } from "@/typings";
+import Breadcrumb from "../Breadcrumb";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -95,15 +96,13 @@ export default function PostList() {
 
   return (
     <BodyWrapper>
-      <div className="text-sm breadcrumbs">
-        <ul>
-          <li>
-            <Link href="/blog">Blog</Link>
-          </li>
-          <li>Trending</li>
-          <li className="font-bold">ALL</li>
-        </ul>
-      </div>
+      <Breadcrumb
+        items={[
+          { label: "Blog", href: "/blog" },
+          { label: "Trending" },
+          { label: "ALL" },
+        ]}
+      />
 
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
         {paginatedPosts.map((post: BlogPost) => (

@@ -34,63 +34,100 @@ export default function PostDetail({ post }: Readonly<PostDetailProps>) {
 
   const imageSrc =
     typeof post?.featuredImage === "string" &&
-    post.featuredImage.trim() !== "" &&
-    post.featuredImage !== "null" &&
-    post.featuredImage !== "undefined"
+      post.featuredImage.trim() !== "" &&
+      post.featuredImage !== "null" &&
+      post.featuredImage !== "undefined"
       ? post.featuredImage
       : "/placeholder.svg";
   const displayDate = toDisplayDate(post?.publishedAt ?? post?.createdAt ?? null);
 
   return (
     <BodyWrapper>
-      <section className="rounded-3xl border border-primaryGrey/60 bg-white/90 p-4 sm:p-6 lg:p-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <aside className="lg:sticky lg:top-24 h-fit space-y-3">
-            <div className="rounded-2xl bg-[#FFF8F6] border border-primaryGrey/40 p-4">
-              <p className="text-xs uppercase tracking-wide text-tertiaryGrey">Posted by</p>
-              <p className="font-semibold text-customBlack mt-1">Admin</p>
-              <p className="text-sm text-tertiaryGrey mt-1">{displayDate}</p>
+      <section className="max-w-7xl px-4 py-10">
+        <div className="grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-10">
+
+          {/* Sidebar */}
+          <aside className="space-y-4 lg:sticky lg:top-24 h-fit">
+
+            <div className="text-sm text-gray-600">
+              <p>
+                Posted by <strong>Admin | Jennifer Ann</strong>
+              </p>
+              <p>On {displayDate}</p>
             </div>
 
-            <div className="rounded-2xl bg-[#F6FFE9] border border-primaryGrey/30 p-4">
-              <p className="text-lg font-semibold text-customBlack">In this article</p>
-              <div className="mt-3 space-y-2 text-sm text-customBlack">
-                <p className="rounded-lg bg-white border border-primaryGrey/30 px-3 py-2">Introduction</p>
-                <p className="rounded-lg bg-white border border-primaryGrey/30 px-3 py-2">Why it matters</p>
-                <p className="rounded-lg bg-white border border-primaryGrey/30 px-3 py-2">Practical tips</p>
-                <p className="rounded-lg bg-white border border-primaryGrey/30 px-3 py-2">Contact us</p>
-              </div>
+            <div className="space-y-2">
+              <a href="#intro" className="block bg-green-100 p-3 rounded-md text-sm hover:bg-green-200">
+                Introduction
+              </a>
+
+              <a href="#value" className="block bg-green-100 p-3 rounded-md text-sm hover:bg-green-200">
+                We value you
+              </a>
+
+              <a href="#boost" className="block bg-green-100 p-3 rounded-md text-sm hover:bg-green-200">
+                Elevating Your Dishes
+              </a>
+
+              <a href="#contact" className="block bg-green-100 p-3 rounded-md text-sm hover:bg-green-200">
+                Get In Touch
+              </a>
+
+              <a href="#comment" className="block bg-green-100 p-3 rounded-md text-sm hover:bg-green-200">
+                Leave a Comment
+              </a>
             </div>
+
           </aside>
 
-          <article className="lg:col-span-2">
-            <div className="overflow-hidden rounded-3xl border border-primaryGrey/40">
-              <Suspense>
-                <Image
-                  src={imageSrc}
-                  alt={post?.title}
-                  width={1200}
-                  height={640}
-                  loading="lazy"
-                  className="w-full h-auto object-cover"
-                />
-              </Suspense>
-            </div>
+          {/* Main Content */}
+          <article className="space-y-6">
 
-            <h1 className="text-3xl sm:text-4xl font-semibold text-customBlack mt-6">{post?.title}</h1>
-            <p className="mt-5 text-base sm:text-lg leading-8 text-tertiaryGrey whitespace-pre-line">
+            <Suspense>
+              <Image
+                src={imageSrc}
+                alt={post?.title}
+                width={900}
+                height={500}
+                className="rounded-lg w-full object-cover"
+              />
+            </Suspense>
+
+            <h1 className="text-3xl font-bold text-gray-900">
               {post?.content}
-            </p>
+            </h1>
 
-            <div className="mt-10 rounded-2xl border border-primaryGrey/50 bg-[#FFF8F6] p-5 sm:p-6">
-              <h3 className="text-2xl font-bold text-customBlack">Get In Touch With Us</h3>
-              <p className="mt-3 leading-7 text-tertiaryGrey">
-                If you’re looking to add some flavour to your menu, We can help you on your journey.
-                For more information about our services and what we can offer you, contact us at{" "}
-                <span className="text-orange font-semibold">jebeyin4real@gmail.com</span> or call{" "}
-                <span className="text-orange font-semibold">08070664809 / 08038353986</span>.
+            {/* We value you */}
+            <section id="value" className="space-y-3">
+              <h2 className="font-semibold text-lg">We value you :</h2>
+              <p className="text-gray-700 leading-7">
+                We take pride in selecting a range of the finest quality,
+                dehydrated produce to offer to the catering industry and others.
               </p>
-            </div>
+            </section>
+
+            {/* Boost section */}
+            <section id="boost" className="space-y-3">
+              <h2 className="font-semibold text-lg">
+                Elevating Your Dishes with a Flavorful Boost :
+              </h2>
+              <p className="text-gray-700 leading-7">
+                At Claire's Delight, we believe in the essence of simplicity when
+                it comes to crafting exceptional meals. Our commitment to using
+                only the purest natural seasonings ensures every dish is infused
+                with fresh authentic flavors.
+              </p>
+            </section>
+
+            {/* Contact */}
+            <section id="contact" className="space-y-3">
+              <h2 className="font-semibold text-lg">Get in Touch with Us</h2>
+              <p className="text-gray-700 leading-7">
+                If you're looking to add some flavour to your menu,
+                we can help you on your journey.
+              </p>
+            </section>
+
           </article>
         </div>
       </section>

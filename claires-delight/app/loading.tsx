@@ -1,7 +1,4 @@
-// app/loading.tsx
-// Kiro Requirement: 7.3 - Add loading skeletons and placeholders
-// Kiro Requirement: 4.1 - Modern UI/UX Patterns
-// Kiro Requirement: 4.4 - Visual Feedback
+
 
 export default function Loading() {
   return (

@@ -51,3 +51,6 @@ export default function Banner({ image, title, subtitle }: Readonly<BannerProps>
 
 // banner logo
 // https://res.cloudinary.com/dzd51q99i/image/upload/v1717191258/clairesdelight/logo/Claire_s_Delight_Logo_PNG_2_ixjelq.png
+
+// banner logo
+// https://res.cloudinary.com/dzd51q99i/image/upload/v1717191258/clairesdelight/logo/Claire_s_Delight_Logo_PNG_2_ixjelq.png

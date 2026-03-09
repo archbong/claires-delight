@@ -25,9 +25,9 @@ interface PostCardItem {
 export default function PostCard({ post }: { post: PostCardItem }) {
   const imageSrc =
     typeof post?.featuredImage === "string" &&
-    post.featuredImage.trim() !== "" &&
-    post.featuredImage !== "null" &&
-    post.featuredImage !== "undefined"
+      post.featuredImage.trim() !== "" &&
+      post.featuredImage !== "null" &&
+      post.featuredImage !== "undefined"
       ? post.featuredImage
       : "/placeholder.svg";
 
@@ -42,39 +42,64 @@ export default function PostCard({ post }: { post: PostCardItem }) {
   const createdAtDate = new Date(post.createdAt ?? new Date().toISOString());
   const formattedDate = `${createdAtDate.getDate()} ${createdAtDate.toLocaleString('default', { month: 'long' }).toUpperCase()} ${createdAtDate.getFullYear()}`;
   return (
-    <div className="card w-full h-full bg-base-100 shadow-xl rounded-3xl overflow-hidden">
-      <Suspense fallback={<Loading />}>
-        <figure>
+    <div className="w-full max-w-md rounded-3xl shadow-lg overflow-hidden transition-transform duration-300 hover:-translate-y-1 hover:shadow-xl">
+
+      {/* Image */}
+      <figure className="w-full h-[260px] relative">
+        <Suspense fallback={<Loading />}>
           <Image
             src={imageSrc}
             alt={post?.title}
-            width={500}
-            height={500}
-            loading="lazy"
-            className="rounded-t-3xl"
+            fill
+            className="object-cover rounded-t-3xl"
+            sizes="(max-width:768px) 100vw, 400px"
           />
-        </figure>
-      </Suspense>
-      <div className="p-5">
-        <SpiceTitle title={post?.title} />
-        <p className="line-clamp-4">{post?.content}</p>
-        <p className="text-orange py-2">
-          <Link href={`/blog/${post?.slug}`}>Read more</Link>
+        </Suspense>
+      </figure>
+
+      {/* Content */}
+      <div className="p-6 flex flex-col gap-4">
+
+        {/* Title */}
+        <h2 className="text-xl font-bold text-gray-900 leading-snug">
+          {post?.title}
+        </h2>
+
+        {/* Description */}
+        <p className="text-gray-600 text-sm leading-relaxed line-clamp-4">
+          {post?.content}
         </p>
-        <div className="flex justify-between items-center">
-          <div className="flex flex-row justify-center items-center gap-1 text-teritaryGrey font-bold">
+
+        {/* Read More */}
+        <Link
+          href={`/blog/${post?.slug}`}
+          className="text-orange-500 font-semibold hover:underline"
+        >
+          Read More
+        </Link>
+
+        {/* Footer */}
+        <div className="flex items-end justify-between pt-2">
+
+          {/* Author + likes */}
+          <div className="flex items-center gap-2 text-gray-500 text-sm">
             <FaUser />
-            <p>{authorName}</p>
-            <button>
-              <BiSolidLike />
-            </button>
-            <p>{0}</p>
+            <span>by {authorName}</span>
+
+            <BiSolidLike className="ml-2" />
+            <span>0</span>
           </div>
 
-          <div className="flex flex-col justify-center items-center">
-            <span className="font-bolder text-3xl">{createdAtDate.getDate()}</span>
-            <p className="text-teritaryGrey">{formattedDate}</p>
+          {/* Date */}
+          <div className="text-center">
+            <p className="text-lg font-bold leading-none">
+              {formattedDate.split(" ")[0]}
+            </p>
+            <p className="text-[10px] text-gray-500 uppercase leading-none tracking-wide">
+              {formattedDate.split(" ").slice(1).join(" ")}
+            </p>
           </div>
+
         </div>
       </div>
     </div>

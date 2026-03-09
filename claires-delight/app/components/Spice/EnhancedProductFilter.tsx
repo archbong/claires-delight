@@ -2,11 +2,9 @@
 
 import { useState, useEffect } from "react";
 import { IoMdCheckboxOutline, IoMdClose } from "react-icons/io";
-import { MdCheckBoxOutlineBlank, MdFilterList } from "react-icons/md";
-import { FiChevronDown, FiChevronUp, FiX } from "react-icons/fi";
-import ServiceCard from "@/app/components/LandingPage/our-service/ServiceCard";
-import SpiceTitle from "@/app/components/Spice/SpiceTitle";
-import { Category, Product } from "@/typings";
+import { MdCheckBoxOutlineBlank } from "react-icons/md";
+import { FiX } from "react-icons/fi";
+import { Product } from "@/typings";
 import { useProductsStore } from "@/app/store";
 
 interface EnhancedProductFilterProps {
@@ -26,8 +24,11 @@ interface FilterState {
     bestSelling: boolean;
     aToZ: boolean;
     zToA: boolean;
+    dateOldToNew: boolean;
+    dateNewToOld: boolean;
   };
   price: {
+    all: boolean;
     lowToHigh: boolean;
     highToLow: boolean;
   };
@@ -40,201 +41,334 @@ const EnhancedProductFilter: React.FC<EnhancedProductFilterProps> = ({
 }) => {
   const products = useProductsStore((state) => state.products);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState<string | null>(null);
   const [filterState, setFilterState] = useState<FilterState>({
-    category: {
-      all: false,
-      singleSpices: false,
-      mixedSpices: false,
-    },
+    category: { all: false, singleSpices: false, mixedSpices: false },
     sort: {
       recentlyAdded: false,
       bestSelling: false,
       aToZ: false,
       zToA: false,
+      dateOldToNew: false,
+      dateNewToOld: false,
     },
-    price: {
-      lowToHigh: false,
-      highToLow: false,
-    },
+    price: { all: false, lowToHigh: false, highToLow: false },
   });
 
   const [appliedFilters, setAppliedFilters] = useState<string[]>([]);
 
-  // Calculate product counts
-  const singleSpiceCount = products.filter((product) =>
-    product.category?.some((cat) => cat.title === "Single Spices"),
+  const singleSpiceCount = products.filter((p) =>
+    p.category?.some((cat) => cat.title === "Single Spices")
   ).length;
 
-  const mixedSpiceCount = products.filter((product) =>
-    product.category?.some((cat) => cat.title === "Mixed Spices"),
+  const mixedSpiceCount = products.filter((p) =>
+    p.category?.some((cat) => cat.title === "Mixed Spices")
   ).length;
 
   useEffect(() => {
     let filtered = [...products];
     const { category, sort, price } = filterState;
 
-    // Category filtering
     if (category.singleSpices) {
-      filtered = filtered.filter((product) =>
-        product.category?.some((cat) => cat.title === "Single Spices"),
+      filtered = filtered.filter((p) =>
+        p.category?.some((cat) => cat.title === "Single Spices")
       );
     }
-
     if (category.mixedSpices) {
-      filtered = filtered.filter((product) =>
-        product.category?.some((cat) => cat.title === "Mixed Spices"),
+      filtered = filtered.filter((p) =>
+        p.category?.some((cat) => cat.title === "Mixed Spices")
       );
     }
-
-    // Sorting
     if (sort.recentlyAdded) {
-      filtered.sort((a, b) => {
-        const dateA = new Date(a.createdAt || 0).getTime();
-        const dateB = new Date(b.createdAt || 0).getTime();
-        return dateB - dateA;
-      });
+      filtered.sort((a, b) =>
+        new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime()
+      );
     }
-
-    if (sort.aToZ) {
-      filtered.sort((a, b) => a.name.localeCompare(b.name));
+    if (sort.aToZ) filtered.sort((a, b) => a.name.localeCompare(b.name));
+    if (sort.zToA) filtered.sort((a, b) => b.name.localeCompare(a.name));
+    if (sort.dateOldToNew) {
+      filtered.sort((a, b) =>
+        new Date(a.createdAt || 0).getTime() - new Date(b.createdAt || 0).getTime()
+      );
     }
-
-    if (sort.zToA) {
-      filtered.sort((a, b) => b.name.localeCompare(a.name));
+    if (sort.dateNewToOld) {
+      filtered.sort((a, b) =>
+        new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime()
+      );
     }
-
-    if (price.lowToHigh) {
-      filtered.sort((a, b) => a.price - b.price);
-    }
-
-    if (price.highToLow) {
-      filtered.sort((a, b) => b.price - a.price);
-    }
+    if (price.lowToHigh) filtered.sort((a, b) => a.price - b.price);
+    if (price.highToLow) filtered.sort((a, b) => b.price - a.price);
 
     onFilter(filtered);
 
-    // Update applied filters for display
     const newAppliedFilters: string[] = [];
     if (category.singleSpices) newAppliedFilters.push("Single Spices");
     if (category.mixedSpices) newAppliedFilters.push("Mixed Spices");
     if (sort.recentlyAdded) newAppliedFilters.push("Recently Added");
     if (sort.aToZ) newAppliedFilters.push("A-Z");
     if (sort.zToA) newAppliedFilters.push("Z-A");
+    if (sort.dateOldToNew) newAppliedFilters.push("Date, old to new");
+    if (sort.dateNewToOld) newAppliedFilters.push("Date, new to old");
     if (price.lowToHigh) newAppliedFilters.push("Low to High");
     if (price.highToLow) newAppliedFilters.push("High to Low");
-
     setAppliedFilters(newAppliedFilters);
   }, [products, filterState, onFilter]);
-
-  const toggleFilter = (section: string) => {
-    setActiveSection(activeSection === section ? null : section);
-  };
 
   const handleFilterChange = (
     type: keyof FilterState,
     key: string,
-    value: boolean,
+    value: boolean
   ) => {
     setFilterState((prev) => ({
       ...prev,
-      [type]: {
-        ...prev[type],
-        [key]: value,
-      },
+      [type]: { ...prev[type], [key]: value },
     }));
   };
 
   const clearAllFilters = () => {
     setFilterState({
-      category: {
-        all: false,
-        singleSpices: false,
-        mixedSpices: false,
-      },
+      category: { all: false, singleSpices: false, mixedSpices: false },
       sort: {
         recentlyAdded: false,
         bestSelling: false,
         aToZ: false,
         zToA: false,
+        dateOldToNew: false,
+        dateNewToOld: false,
       },
-      price: {
-        lowToHigh: false,
-        highToLow: false,
-      },
+      price: { all: false, lowToHigh: false, highToLow: false },
     });
     setAppliedFilters([]);
-
-    if (onClearAll) {
-      onClearAll();
-    }
+    onClearAll?.();
   };
 
   const removeFilter = (filterName: string) => {
-    const newFilterState = { ...filterState };
-
-    // Remove category filters
-    if (filterName === "Single Spices") {
-      newFilterState.category.singleSpices = false;
-    } else if (filterName === "Mixed Spices") {
-      newFilterState.category.mixedSpices = false;
-    }
-
-    // Remove sort filters
-    else if (filterName === "Recently Added") {
-      newFilterState.sort.recentlyAdded = false;
-    } else if (filterName === "A-Z") {
-      newFilterState.sort.aToZ = false;
-    } else if (filterName === "Z-A") {
-      newFilterState.sort.zToA = false;
-    }
-
-    // Remove price filters
-    else if (filterName === "Low to High") {
-      newFilterState.price.lowToHigh = false;
-    } else if (filterName === "High to Low") {
-      newFilterState.price.highToLow = false;
-    }
-
-    setFilterState(newFilterState);
-
-    // Update applied filters after removal
-    const updatedFilters = appliedFilters.filter((f) => f !== filterName);
-    setAppliedFilters(updatedFilters);
+    const s = { ...filterState };
+    if (filterName === "Single Spices") s.category.singleSpices = false;
+    else if (filterName === "Mixed Spices") s.category.mixedSpices = false;
+    else if (filterName === "Recently Added") s.sort.recentlyAdded = false;
+    else if (filterName === "A-Z") s.sort.aToZ = false;
+    else if (filterName === "Z-A") s.sort.zToA = false;
+    else if (filterName === "Date, old to new") s.sort.dateOldToNew = false;
+    else if (filterName === "Date, new to old") s.sort.dateNewToOld = false;
+    else if (filterName === "Low to High") s.price.lowToHigh = false;
+    else if (filterName === "High to Low") s.price.highToLow = false;
+    setFilterState(s);
+    setAppliedFilters((prev) => prev.filter((f) => f !== filterName));
   };
 
-  // Mobile Filter Drawer
+  // Reusable checkbox row
+  const CheckboxRow = ({
+    checked,
+    onChange,
+    label,
+  }: {
+    checked: boolean;
+    onChange: () => void;
+    label: string;
+  }) => (
+    <div
+      className="flex items-center gap-2 cursor-pointer select-none"
+      onClick={onChange}
+    >
+      {checked ? (
+        <IoMdCheckboxOutline className="w-5 h-5 text-orange flex-shrink-0" />
+      ) : (
+        <MdCheckBoxOutlineBlank className="w-5 h-5 text-gray-400 flex-shrink-0" />
+      )}
+      <span className="text-sm text-customBlack">{label}</span>
+    </div>
+  );
+
+  const FilterContent = () => (
+    <div className="space-y-4 w-full">
+      {/* Category */}
+      <div className="border border-primaryGrey/60 rounded-2xl p-4 space-y-3">
+        <h4 className="font-bold text-base text-customBlack">Category</h4>
+        <CheckboxRow
+          checked={filterState.category.all}
+          onChange={() =>
+            handleFilterChange("category", "all", !filterState.category.all)
+          }
+          label={`All (${products.length})`}
+        />
+        <CheckboxRow
+          checked={filterState.category.singleSpices}
+          onChange={() =>
+            handleFilterChange(
+              "category",
+              "singleSpices",
+              !filterState.category.singleSpices
+            )
+          }
+          label={`Single Spices (${singleSpiceCount})`}
+        />
+        <CheckboxRow
+          checked={filterState.category.mixedSpices}
+          onChange={() =>
+            handleFilterChange(
+              "category",
+              "mixedSpices",
+              !filterState.category.mixedSpices
+            )
+          }
+          label={`Mixed Spices (${mixedSpiceCount})`}
+        />
+      </div>
+
+      {/* Sort */}
+      <div className="border border-primaryGrey/60 rounded-2xl p-4 space-y-3">
+        <h4 className="font-bold text-base text-customBlack">Sort</h4>
+        <CheckboxRow
+          checked={filterState.sort.recentlyAdded}
+          onChange={() =>
+            handleFilterChange(
+              "sort",
+              "recentlyAdded",
+              !filterState.sort.recentlyAdded
+            )
+          }
+          label={`Recently Added (${products.length})`}
+        />
+        <CheckboxRow
+          checked={filterState.sort.bestSelling}
+          onChange={() =>
+            handleFilterChange(
+              "sort",
+              "bestSelling",
+              !filterState.sort.bestSelling
+            )
+          }
+          label={`Best Selling (${products.length})`}
+        />
+        <CheckboxRow
+          checked={filterState.sort.aToZ}
+          onChange={() =>
+            handleFilterChange("sort", "aToZ", !filterState.sort.aToZ)
+          }
+          label={`Alphabetically, A - Z (${products.length})`}
+        />
+        <CheckboxRow
+          checked={filterState.sort.zToA}
+          onChange={() =>
+            handleFilterChange("sort", "zToA", !filterState.sort.zToA)
+          }
+          label={`Alphabetically, Z - A (${products.length})`}
+        />
+        <CheckboxRow
+          checked={filterState.sort.dateOldToNew}
+          onChange={() =>
+            handleFilterChange(
+              "sort",
+              "dateOldToNew",
+              !filterState.sort.dateOldToNew
+            )
+          }
+          label={`Date, old to new (${products.length})`}
+        />
+        <CheckboxRow
+          checked={filterState.sort.dateNewToOld}
+          onChange={() =>
+            handleFilterChange(
+              "sort",
+              "dateNewToOld",
+              !filterState.sort.dateNewToOld
+            )
+          }
+          label={`Date, new to old (${products.length})`}
+        />
+      </div>
+
+      {/* Price */}
+      <div className="border border-primaryGrey/60 rounded-2xl p-4 space-y-3">
+        <h4 className="font-bold text-base text-customBlack">Price</h4>
+        <CheckboxRow
+          checked={filterState.price.all}
+          onChange={() =>
+            handleFilterChange("price", "all", !filterState.price.all)
+          }
+          label={`All (${products.length})`}
+        />
+        <CheckboxRow
+          checked={filterState.price.lowToHigh}
+          onChange={() =>
+            handleFilterChange(
+              "price",
+              "lowToHigh",
+              !filterState.price.lowToHigh
+            )
+          }
+          label={`Low to High (${products.length})`}
+        />
+        <CheckboxRow
+          checked={filterState.price.highToLow}
+          onChange={() =>
+            handleFilterChange(
+              "price",
+              "highToLow",
+              !filterState.price.highToLow
+            )
+          }
+          label={`High to Low (${products.length})`}
+        />
+      </div>
+    </div>
+  );
+
+  // Mobile Drawer
   const FilterDrawer = () => (
     <div className="fixed inset-0 z-50 lg:hidden">
       <div
         className="absolute inset-0 bg-black bg-opacity-50"
         onClick={() => setIsFilterOpen(false)}
       />
-      <div className="absolute right-0 top-0 h-full w-80 bg-white shadow-xl transform transition-transform duration-300 ease-in-out">
-        <div className="p-4 border-b border-primaryGrey">
-          <div className="flex items-center justify-between">
-            <h3 className="text-lg font-semibold">Filters</h3>
+      <div className="absolute right-0 top-0 h-full w-80 bg-white shadow-xl">
+        <div className="p-4 border-b border-primaryGrey flex items-center justify-between">
+          <h3 className="font-bold text-lg text-customBlack">Filter By</h3>
+          <button
+            onClick={() => setIsFilterOpen(false)}
+            className="p-2 hover:bg-gray-100 rounded-lg"
+          >
+            <IoMdClose className="w-5 h-5" />
+          </button>
+        </div>
+
+        {/* Applied filters */}
+        {appliedFilters.length > 0 && (
+          <div className="px-4 pt-3 flex flex-wrap gap-2">
+            {appliedFilters.map((filter) => (
+              <span
+                key={filter}
+                className="inline-flex items-center gap-1 bg-orange/10 text-orange px-3 py-1 rounded-full text-xs"
+              >
+                {filter}
+                <button onClick={() => removeFilter(filter)}>
+                  <FiX className="w-3 h-3" />
+                </button>
+              </span>
+            ))}
             <button
-              onClick={() => setIsFilterOpen(false)}
-              className="p-2 hover:bg-gray-100 rounded-lg"
+              onClick={clearAllFilters}
+              className="text-orange text-xs hover:underline"
             >
-              <IoMdClose className="w-5 h-5" />
+              Clear all
             </button>
           </div>
+        )}
+
+        <div className="p-4 overflow-y-auto h-full pb-32">
+          <FilterContent />
         </div>
-        <div className="p-4 overflow-y-auto h-full pb-20">
-          <DesktopFilterContent />
-        </div>
-        <div className="absolute bottom-0 left-0 right-0 p-4 bg-white border-t border-primaryGrey">
+
+        <div className="absolute bottom-0 left-0 right-0 p-4 bg-white border-t border-primaryGrey space-y-2">
           <button
             onClick={clearAllFilters}
-            className="w-full py-3 px-4 border border-orange text-orange rounded-lg hover:bg-orange hover:text-white transition-colors mb-2"
+            className="w-full py-3 border border-orange text-orange rounded-lg hover:bg-orange hover:text-white transition-colors text-sm font-medium"
           >
             Clear All
           </button>
           <button
             onClick={() => setIsFilterOpen(false)}
-            className="w-full py-3 px-4 bg-green text-white rounded-lg hover:bg-orange transition-colors"
+            className="w-full py-3 bg-green text-white rounded-lg hover:bg-orange transition-colors text-sm font-medium"
           >
             Apply Filters
           </button>
@@ -243,253 +377,17 @@ const EnhancedProductFilter: React.FC<EnhancedProductFilterProps> = ({
     </div>
   );
 
-  // Desktop Filter Content (reusable for mobile drawer)
-  const DesktopFilterContent = () => (
-    <div className="space-y-6">
-      {/* Applied Filters */}
-      {appliedFilters.length > 0 && (
-        <div className="bg-lighterGreen p-3 rounded-lg">
-          <h4 className="font-semibold text-sm mb-2">Applied Filters:</h4>
-          <div className="flex flex-wrap gap-2">
-            {appliedFilters.map((filter) => (
-              <span
-                key={filter}
-                className="inline-flex items-center gap-1 bg-white px-3 py-1 rounded-full text-sm border border-primaryGrey"
-              >
-                {filter}
-                <button
-                  onClick={() => removeFilter(filter)}
-                  className="text-tertiaryGrey hover:text-red"
-                >
-                  <FiX className="w-3 h-3" />
-                </button>
-              </span>
-            ))}
-            <button
-              onClick={clearAllFilters}
-              className="text-orange text-sm hover:underline"
-            >
-              Clear all
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* Category Section */}
-      <div className="border border-primaryGrey rounded-lg">
-        <button
-          className="w-full p-4 flex items-center justify-between hover:bg-lighterGreen transition-colors"
-          onClick={() => toggleFilter("category")}
-        >
-          <span className="font-semibold">Category</span>
-          {activeSection === "category" ? (
-            <FiChevronUp className="w-5 h-5" />
-          ) : (
-            <FiChevronDown className="w-5 h-5" />
-          )}
-        </button>
-        {activeSection === "category" && (
-          <div className="p-4 border-t border-primaryGrey space-y-3">
-            <div className="flex items-center gap-3">
-              <button
-                onClick={() =>
-                  handleFilterChange(
-                    "category",
-                    "all",
-                    !filterState.category.all,
-                  )
-                }
-                className="flex-shrink-0"
-              >
-                {filterState.category.all ? (
-                  <IoMdCheckboxOutline className="w-5 h-5 text-orange" />
-                ) : (
-                  <MdCheckBoxOutlineBlank className="w-5 h-5" />
-                )}
-              </button>
-              <span className="text-sm">All ({products.length})</span>
-            </div>
-            <div className="flex items-center gap-3">
-              <button
-                onClick={() =>
-                  handleFilterChange(
-                    "category",
-                    "singleSpices",
-                    !filterState.category.singleSpices,
-                  )
-                }
-                className="flex-shrink-0"
-              >
-                {filterState.category.singleSpices ? (
-                  <IoMdCheckboxOutline className="w-5 h-5 text-orange" />
-                ) : (
-                  <MdCheckBoxOutlineBlank className="w-5 h-5" />
-                )}
-              </button>
-              <span className="text-sm">
-                Single Spices ({singleSpiceCount})
-              </span>
-            </div>
-            <div className="flex items-center gap-3">
-              <button
-                onClick={() =>
-                  handleFilterChange(
-                    "category",
-                    "mixedSpices",
-                    !filterState.category.mixedSpices,
-                  )
-                }
-                className="flex-shrink-0"
-              >
-                {filterState.category.mixedSpices ? (
-                  <IoMdCheckboxOutline className="w-5 h-5 text-orange" />
-                ) : (
-                  <MdCheckBoxOutlineBlank className="w-5 h-5" />
-                )}
-              </button>
-              <span className="text-sm">Mixed Spices ({mixedSpiceCount})</span>
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* Sort Section */}
-      <div className="border border-primaryGrey rounded-lg">
-        <button
-          className="w-full p-4 flex items-center justify-between hover:bg-lighterGreen transition-colors"
-          onClick={() => toggleFilter("sort")}
-        >
-          <span className="font-semibold">Sort By</span>
-          {activeSection === "sort" ? (
-            <FiChevronUp className="w-5 h-5" />
-          ) : (
-            <FiChevronDown className="w-5 h-5" />
-          )}
-        </button>
-        {activeSection === "sort" && (
-          <div className="p-4 border-t border-primaryGrey space-y-3">
-            <div className="flex items-center gap-3">
-              <button
-                onClick={() =>
-                  handleFilterChange(
-                    "sort",
-                    "recentlyAdded",
-                    !filterState.sort.recentlyAdded,
-                  )
-                }
-                className="flex-shrink-0"
-              >
-                {filterState.sort.recentlyAdded ? (
-                  <IoMdCheckboxOutline className="w-5 h-5 text-orange" />
-                ) : (
-                  <MdCheckBoxOutlineBlank className="w-5 h-5" />
-                )}
-              </button>
-              <span className="text-sm">Recently Added</span>
-            </div>
-            <div className="flex items-center gap-3">
-              <button
-                onClick={() =>
-                  handleFilterChange("sort", "aToZ", !filterState.sort.aToZ)
-                }
-                className="flex-shrink-0"
-              >
-                {filterState.sort.aToZ ? (
-                  <IoMdCheckboxOutline className="w-5 h-5 text-orange" />
-                ) : (
-                  <MdCheckBoxOutlineBlank className="w-5 h-5" />
-                )}
-              </button>
-              <span className="text-sm">Alphabetically, A-Z</span>
-            </div>
-            <div className="flex items-center gap-3">
-              <button
-                onClick={() =>
-                  handleFilterChange("sort", "zToA", !filterState.sort.zToA)
-                }
-                className="flex-shrink-0"
-              >
-                {filterState.sort.zToA ? (
-                  <IoMdCheckboxOutline className="w-5 h-5 text-orange" />
-                ) : (
-                  <MdCheckBoxOutlineBlank className="w-5 h-5" />
-                )}
-              </button>
-              <span className="text-sm">Alphabetically, Z-A</span>
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* Price Section */}
-      <div className="border border-primaryGrey rounded-lg">
-        <button
-          className="w-full p-4 flex items-center justify-between hover:bg-lighterGreen transition-colors"
-          onClick={() => toggleFilter("price")}
-        >
-          <span className="font-semibold">Price</span>
-          {activeSection === "price" ? (
-            <FiChevronUp className="w-5 h-5" />
-          ) : (
-            <FiChevronDown className="w-5 h-5" />
-          )}
-        </button>
-        {activeSection === "price" && (
-          <div className="p-4 border-t border-primaryGrey space-y-3">
-            <div className="flex items-center gap-3">
-              <button
-                onClick={() =>
-                  handleFilterChange(
-                    "price",
-                    "lowToHigh",
-                    !filterState.price.lowToHigh,
-                  )
-                }
-                className="flex-shrink-0"
-              >
-                {filterState.price.lowToHigh ? (
-                  <IoMdCheckboxOutline className="w-5 h-5 text-orange" />
-                ) : (
-                  <MdCheckBoxOutlineBlank className="w-5 h-5" />
-                )}
-              </button>
-              <span className="text-sm">Low to High</span>
-            </div>
-            <div className="flex items-center gap-3">
-              <button
-                onClick={() =>
-                  handleFilterChange(
-                    "price",
-                    "highToLow",
-                    !filterState.price.highToLow,
-                  )
-                }
-                className="flex-shrink-0"
-              >
-                {filterState.price.highToLow ? (
-                  <IoMdCheckboxOutline className="w-5 h-5 text-orange" />
-                ) : (
-                  <MdCheckBoxOutlineBlank className="w-5 h-5" />
-                )}
-              </button>
-              <span className="text-sm">High to Low</span>
-            </div>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-
   return (
     <>
-      {/* Desktop Filter */}
+      {/* Desktop */}
       {!isMobile && (
         <div className="hidden lg:block">
-          <DesktopFilterContent />
+          <h3 className="font-bold text-lg text-customBlack mb-4">Filter By</h3>
+          <FilterContent />
         </div>
       )}
 
-      {/* Mobile Filter Drawer */}
+      {/* Mobile Drawer */}
       {isFilterOpen && <FilterDrawer />}
     </>
   );
