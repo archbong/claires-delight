@@ -1,6 +1,3 @@
-// Kiro Requirement: 4.1 - Modern UI/UX Patterns
-// Kiro Requirement: 6.2 - Quick View Modal Implementation
-// Kiro Requirement: 4.3 - Smooth Transitions
 
 "use client";
 
