@@ -59,6 +59,12 @@ const setCartError = useCartStore((s) => s.setError);
 
       addToCart(product);
 
+      useCartStore.getState().setNotification({
+            type: "success",
+            message: `${product.name} added to cart from wishlist`,
+            product,
+          });
+
       setTimeout(() => {
         setShowSuccess(true);
         setButtonScale(1.1);
@@ -71,7 +77,11 @@ const setCartError = useCartStore((s) => s.setError);
       }, 1500);
     } catch (error) {
       setCartError("Failed to add to cart");
-      Notify.failure("Failed to add to cart");
+      useCartStore.getState().setNotification({
+      type: "error",
+      message: `${product.name} failed to add to cart`,
+      product,
+    });
       setIsAddingToCart(false);
     } finally {
       setCartLoading(false);
@@ -108,7 +118,11 @@ const setCartError = useCartStore((s) => s.setError);
     // await fetch("/api/wishlist/toggle", {...});
 
   } catch (error) {
-    Notify.failure("Wishlist action failed");
+    useCartStore.getState().setNotification({
+      type: "error",
+      message: `${product.name} failed to add to wishlist`,
+      product,
+    });
   } finally {
     setWishlistLoading(false);
   }

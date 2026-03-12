@@ -21,6 +21,7 @@ interface PostCardItem {
   featuredImage?: string | null;
   author?: string | PostAuthor;
   createdAt?: string;
+  likes?: number;
 }
 
 export default function PostCard({ post }: { post: PostCardItem }) {
@@ -88,7 +89,7 @@ export default function PostCard({ post }: { post: PostCardItem }) {
             <span>by {authorName}</span>
 
             <BiSolidLike className="ml-2" />
-            <span>0</span>
+            <span>{post?.likes || 0}</span>
           </div>
 
           {/* Date */}

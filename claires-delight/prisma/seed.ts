@@ -1381,6 +1381,7 @@ async function main() {
       publishedAt: new Date(),
       isFeatured: true,
       readTime: 8,
+      likes: 120,
       authorId: adminUser.id,
       categoryId: postCategory.id,
       tags: {
@@ -1430,6 +1431,7 @@ async function main() {
       contentType: "BLOG",
       publishedAt: new Date(),
       readTime: 6,
+      likes: 120,
       authorId: sellerUser.id,
       categoryId: postCategory.id,
       tags: {
@@ -1474,6 +1476,7 @@ async function main() {
       contentType: "BLOG",
       publishedAt: new Date(),
       readTime: 7,
+      likes: 120,
       authorId: sellerUser.id,
       categoryId: postCategory.id,
       tags: {
@@ -1513,6 +1516,7 @@ async function main() {
       contentType: "BLOG",
       publishedAt: new Date(),
       readTime: 6,
+      likes: 120,
       authorId: sellerUser.id,
       categoryId: postCategory.id,
       tags: {
