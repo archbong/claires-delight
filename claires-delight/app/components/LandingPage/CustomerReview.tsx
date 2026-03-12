@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Title from "../typography/Title";
 import Paragraph from "../typography/Paragraph";
 import PageButton from "../button/PageButton";
+import Unavailable from "../Unavailable";
 
 interface CustomerReviewItem {
   id: string;
@@ -62,7 +63,7 @@ function CustomerReview() {
   }
 
   if (customerReviews.length === 0) {
-    return <div className="flex justify-center items-center pt-10">No customer review</div>;
+    return <Unavailable itemType="customer reviews" />;
   }
 
   const { name, description } = customerReviews[currentIndex];

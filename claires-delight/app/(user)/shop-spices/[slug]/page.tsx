@@ -4,6 +4,7 @@ import { getSpice } from "@/lib/data";
 import SpiceDetailCard from "@/app/components/Spice/SpiceDetailCard";
 import Navbar from "@/app/components/header/navbar/Navbar";
 import ResponsiveFooter from "@/app/components/footer/responsive/ResponsiveFooter";
+import Breadcrumb from "@/app/components/Breadcrumb";
 
 export const generateMetadata = async ({
   params,
@@ -11,7 +12,7 @@ export const generateMetadata = async ({
   params: Promise<{ slug: string }>;
 }) => {
   const { slug } = await params;
-  
+
   const spice = await getSpice(slug);
 
   if (!spice) {
@@ -112,15 +113,15 @@ export default async function Page({
     <>
       <Navbar />
       <BodyWrapper>
-        <div className="text-sm breadcrumbs">
-          <ul>
-            <li>
-              <Link href="/shop-spices">Shop Spices</Link>
-            </li>
-            <li>All Spices</li>
-            <li>{spice?.name}</li>
-          </ul>
-        </div>
+
+        <Breadcrumb
+          items={[
+            { label: "Shop Spices", href: "/shop-spices" },
+            { label: "All Spices", href: "/shop-spices" },
+            { label: spice?.name ?? "Spice Detail" },
+          ]}
+        />
+
         <div className="flex justify-center">
           <SpiceDetailCard item={spice} />
         </div>

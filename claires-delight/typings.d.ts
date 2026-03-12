@@ -76,11 +76,11 @@ export interface Recipe {
   title: string;
   slug: string;
   description: string;
+  image?: string;
   ingredients: string[];
   instructions: string[];
   prepTime?: number;
   cookTime?: number;
   servings?: number;
-  image?: string;
   difficulty?: 'easy' | 'medium' | 'hard';
 }

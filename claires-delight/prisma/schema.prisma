@@ -225,6 +225,7 @@ model Recipe {
   title       String
   slug        String        @unique
   description String
+  image       String?
   cookingTime Int
   difficulty  Difficulty    @default(MEDIUM)
   servings    Int

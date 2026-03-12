@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { Suspense } from "react";
 import BodyWrapper from "@/app/components/layout/BodyWrapper";
+import BlogRenderer from "./BlogRender";
 
 interface PostDetailItem {
   title: string;
@@ -93,8 +94,8 @@ export default function PostDetail({ post }: Readonly<PostDetailProps>) {
               />
             </Suspense>
 
-            <h1 className="text-3xl font-bold text-gray-900">
-              {post?.content}
+            <h1 className="max-w-4xl px-4">
+               <BlogRenderer content={post?.content || ""} />
             </h1>
 
             {/* We value you */}

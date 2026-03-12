@@ -57,6 +57,7 @@ type RecipeWithRelations = {
   title: string;
   slug: string;
   description: string;
+  image: string;
   difficulty: string;
   servings: number;
   cookingTime: number;
@@ -107,6 +108,7 @@ const mapRecipe = (recipe: RecipeWithRelations) => ({
   title: recipe.title,
   slug: recipe.slug,
   description: recipe.description,
+  image: recipe.image,
   ingredients: (recipe.ingredients ?? []).map((item) => item.name),
   method: [...(recipe.methodSteps ?? [])]
     .sort((a, b) => a.order - b.order)
@@ -114,11 +116,12 @@ const mapRecipe = (recipe: RecipeWithRelations) => ({
   instructions: [...(recipe.methodSteps ?? [])]
     .sort((a, b) => a.order - b.order)
     .map((item) => item.step),
-  image: "/placeholder.svg",
   difficulty: (recipe.difficulty?.toLowerCase?.() as "easy" | "medium" | "hard" | undefined),
   servings: recipe.servings,
   cookTime: recipe.cookingTime,
 });
+
+console.log("Data mapping functions defined successfully.");
 
 const hydrateRecipeRelations = async (recipes: RecipeBase[]): Promise<RecipeWithRelations[]> => {
   if (!recipes.length) {
@@ -243,7 +246,7 @@ export const getPosts = async () => {
 
 export const getRecipes = async () => {
   const recipes = await prisma.recipe.findMany({
-    orderBy: { createdAt: "desc" as const },
+    orderBy: { createdAt: "asc" as const },
   });
   const hydrated = await hydrateRecipeRelations(recipes as RecipeBase[]);
   return hydrated.map((recipe) => mapRecipe(recipe));

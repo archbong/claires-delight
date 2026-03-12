@@ -35,6 +35,7 @@ interface CartState {
   closeCart: () => void;
   setLoading: (loading: boolean) => void;
   setError: (error: string | null) => void;
+  setNotification: (notification: CartNotification) => void;
   clearNotification: () => void;
 
   // Computed values
@@ -177,6 +178,11 @@ export const useCartStore = create<CartState>()(
                 message: null,
                 product: null,
               },
+        }),
+
+      setNotification: (notification) =>
+        set({
+          notification,
         }),
 
       clearNotification: () =>

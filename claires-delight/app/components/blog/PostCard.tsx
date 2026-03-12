@@ -5,6 +5,7 @@ import Link from "next/link";
 import { FaUser } from "react-icons/fa6";
 import { BiSolidLike } from "react-icons/bi";
 import SpiceTitle from "@/app/components/Spice/SpiceTitle";
+import BlogRenderer from "./BlogRender";
 
 interface PostAuthor {
   firstname?: string;
@@ -61,13 +62,13 @@ export default function PostCard({ post }: { post: PostCardItem }) {
       <div className="p-6 flex flex-col gap-4">
 
         {/* Title */}
-        <h2 className="text-xl font-bold text-gray-900 leading-snug">
+        {/* <h2 className="text-xl font-bold text-gray-900 leading-snug">
           {post?.title}
-        </h2>
+        </h2> */}
 
         {/* Description */}
         <p className="text-gray-600 text-sm leading-relaxed line-clamp-4">
-          {post?.content}
+          <BlogRenderer content={post?.content || ""} />
         </p>
 
         {/* Read More */}

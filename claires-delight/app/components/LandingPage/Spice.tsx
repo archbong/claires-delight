@@ -7,16 +7,13 @@ import EnhancedSpiceCard from "../Spice/EnhancedSpiceCard";
 import { useProductsStore } from "@/app/store";
 import Link from "next/link";
 import { FaArrowRight } from "react-icons/fa6";
+import Unavailable from "../Unavailable";
 
 const Spice = () => {
-   const products = useProductsStore((state) => state.products);
-  
-    if (!Array.isArray(products) || products.length === 0) {
-      return null;
-    }
- 
-  if (!Array.isArray(products) || products.length === 0) {
-    return null;
+  const products = useProductsStore((state) => state.products);
+
+  if (!products) {
+    return (<Unavailable itemType="spices" />);
   }
 
   return (

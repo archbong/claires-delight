@@ -14,6 +14,7 @@ import { CartItem } from "@/typings";
 import { useEffect } from "react";
 import { formatNaira } from "@/lib/utils/currency";
 import { useCartStore } from "@/app/store/cartStore";
+import Breadcrumb from "../Breadcrumb";
 
 export default function CartView() {
   const cartItems = useCartStore((state) => state.items);
@@ -29,15 +30,14 @@ export default function CartView() {
 
   return (
     <BodyWrapper>
-      <div className="text-sm breadcrumbs">
-        <ul>
-          <li>
-            <Link href="/shop-spices">Shop Spices</Link>
-          </li>
-          <li>All Spices</li>
-          <li className="font-blog">My Cart</li>
-        </ul>
-      </div>
+
+      <Breadcrumb
+        items={[
+          { label: "Shop Spices", href: "/shop-spices" },
+          { label: "All Spices", href: "/shop-spices" },
+          { label: "My Cart" },
+        ]}
+      />
       {cartItems.length === 0 ? (
         <div className="flex flex-col justify-center items-center gap-5 h-[30rem]">
           <Image src={cartImage} alt="carting" width={300} height={200} />

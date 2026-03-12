@@ -254,9 +254,9 @@ const EnhancedNavbar: React.FC<EnhancedNavbarProps> = ({ onSearch }) => {
                   href={link.path}
                   className={cn(
                     "relative font-medium text-sm transition-colors duration-300",
-                    "hover:text-orange focus:outline-none focus:ring-2 focus:ring-orange focus:ring-offset-2 rounded-md px-2 py-1",
+                    "hover:text-orange focus:outline-none rounded-md px-2 py-1",
                     pathname === link.path
-                      ? "text-red font-semibold after:content-[''] after:absolute after:bottom-0 after:left-2 after:right-2 after:h-0.5 after:bg-red after:rounded-full"
+                      ? "text-red font-semibold"
                       : "text-customBlack hover:text-orange",
                   )}
                   aria-current={pathname === link.path ? "page" : undefined}

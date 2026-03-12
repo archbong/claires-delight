@@ -16,9 +16,9 @@ import { Notify } from "notiflix/build/notiflix-notify-aio";
 export default function SpiceDetailCard({ item }: any) {
   const imageSrc =
     typeof item?.images === "string" &&
-    item.images.trim() !== "" &&
-    item.images !== "null" &&
-    item.images !== "undefined"
+      item.images.trim() !== "" &&
+      item.images !== "null" &&
+      item.images !== "undefined"
       ? item.images
       : "/placeholder.svg";
   const addToCart = useCartStore((state) => state.addToCart);
@@ -92,21 +92,20 @@ export default function SpiceDetailCard({ item }: any) {
 
   return (
     <BodyWrapper>
-      <section className="rounded-3xl border border-primaryGrey/60 bg-white/90 p-4 sm:p-6 lg:p-8 shadow-sm">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+      <section className="relative p-6 flex items-center justify-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14">
           <Suspense>
             <div
-              className="rounded-3xl bg-[#FFF8F6] relative border border-primaryGrey/40 p-4 sm:p-6"
+              className="rounded-3xl bg-[#FFF8F6] relative p-5 sm:p-6"
               style={{ width: "100%", overflow: "hidden" }}
             >
               <button
                 onClick={handleWishlistToggle}
                 disabled={wishlistLoading}
-                className={`absolute top-4 right-4 z-10 w-12 h-12 rounded-full flex items-center justify-center transition-all duration-200 ${
-                  isWishlisted
-                    ? "bg-red text-white shadow-lg"
-                    : "bg-white text-customBlack hover:bg-red hover:text-white shadow-md"
-                } hover:scale-110 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed`}
+                className={`absolute top-4 right-4 z-10 w-12 h-12 rounded-full flex items-center justify-center transition-all duration-200 ${isWishlisted
+                  ? "bg-red text-white shadow-lg"
+                  : "bg-white text-customBlack hover:bg-red hover:text-white shadow-md"
+                  } hover:scale-110 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed`}
                 aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
               >
                 {wishlistLoading ? (
@@ -121,7 +120,7 @@ export default function SpiceDetailCard({ item }: any) {
                 alt={item.name}
                 width={900}
                 height={900}
-                className="rounded-2xl"
+                className="object-contain max-h-[420px]"
                 style={{ objectFit: "cover", width: "100%", height: "auto" }}
               />
             </div>
@@ -130,7 +129,7 @@ export default function SpiceDetailCard({ item }: any) {
           <div className="flex flex-col">
             <Subtitle title={item.name} />
 
-            <div className="mt-3 inline-flex items-center gap-3 rounded-full bg-[#FFF8F6] px-4 py-2 w-fit">
+            <div className="mt-3 inline-flex items-center gap-3 rounded-full px-4 py-2 w-fit">
               <span className="flex justify-between text-orange text-lg">
                 <IoIosStar />
                 <IoIosStar />
@@ -141,11 +140,18 @@ export default function SpiceDetailCard({ item }: any) {
               <p className="text-sm text-tertiaryGrey">{item?.reviewCount ?? 0} Reviews</p>
             </div>
 
-            <p className="mt-4 text-tertiaryGrey leading-7">{item.description}</p>
+            <div className="mt-4">
+              <p className="font-semibold text-customBlack mb-1">Rich Content:</p>
+              <p className="text-tertiaryGrey leading-7">{item.description}</p>
+            </div>
 
-            <div className="mt-8 rounded-2xl border border-primaryGrey/50 bg-[#fcfcfc] p-5 sm:p-6">
-              <small className="text-teritaryGrey uppercase tracking-wide">Price</small>
-              <p className="font-bold text-3xl mt-1 text-customBlack">₦{formattedPrice}</p>
+           
+              <div className="mt-6">
+                <p className="text-sm text-tertiaryGrey">Price</p>
+                <p className="font-bold text-3xl text-customBlack mt-1">
+                  ₦{formattedPrice}
+                </p>
+              </div>
 
               <div className="mt-4">
                 {isOutOfStock ? (
@@ -160,71 +166,69 @@ export default function SpiceDetailCard({ item }: any) {
               </div>
 
               <div className="mt-6">
-                <small className="text-teritaryGrey uppercase tracking-wide">Quantity</small>
-              </div>
+                <p className="text-sm text-tertiaryGrey mb-2">Quantity</p>
 
-              <div className="mt-2 flex flex-col sm:flex-row gap-4 sm:items-center sm:justify-between">
-                <div className="border border-primaryGrey/70 flex flex-row justify-around items-center w-[10rem] h-[3rem] rounded-xl bg-white">
-                  <button
-                    className="bg-white hover:bg-gray-100 border-r px-3 h-full"
-                    aria-label="decrease"
-                    onClick={() => handleQuantityChange(quantity - 1)}
-                  >
-                    <AiOutlineMinus />
-                  </button>
-                  <p className="bg-white border-r border-l px-4">{quantity}</p>
-                  <button
-                    className="bg-white hover:bg-gray-100 border-l px-3 h-full"
-                    aria-label="increase"
-                    onClick={() => handleQuantityChange(quantity + 1)}
-                  >
-                    <MdOutlineAdd />
-                  </button>
-                </div>
+                <div className="flex items-center gap-14">
+                  <div className="border border-primaryGrey flex items-center rounded-lg overflow-hidden p-2">
+                    <button
+                      className="px-4 py-2 hover:bg-gray-100"
+                      onClick={() => handleQuantityChange(quantity - 1)}
+                    >
+                      <AiOutlineMinus />
+                    </button>
 
-                <div className="flex gap-3">
-                  <button className="bg-orange btn text-white min-w-[8rem]" disabled={isOutOfStock}>
+                    <span className="px-5">{quantity}</span>
+
+                    <button
+                      className="px-4 py-2 hover:bg-gray-100"
+                      onClick={() => handleQuantityChange(quantity + 1)}
+                    >
+                      <MdOutlineAdd />
+                    </button>
+                  </div>
+
+                  <button className="bg-orange text-white px-10 py-3 rounded-lg font-medium">
                     Buy Now
                   </button>
-                  <button
+
+                  <button 
+                    className="border border-orange text-orange px-8 py-3 rounded-lg font-medium"
                     onClick={handleAddToCart}
-                    disabled={isOutOfStock || isAddingToCart || cartLoading}
-                    className={`btn text-orange min-w-[8rem] transition-all duration-200 ${
-                      showCartSuccess ? "bg-green text-white" : ""
-                    } ${isAddingToCart ? "opacity-50 cursor-not-allowed" : ""}`}
+                    disabled={isAddingToCart || cartLoading || isOutOfStock}
                   >
-                    {isAddingToCart || cartLoading ? (
-                      <span className="loading loading-spinner loading-xs" />
-                    ) : showCartSuccess ? (
-                      "Added!"
-                    ) : (
-                      "Add to cart"
-                    )}
+                    Add To Cart
                   </button>
                 </div>
               </div>
-            </div>
           </div>
         </div>
       </section>
 
-      <section className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-5">
-        <div className="rounded-2xl border border-primaryGrey/60 bg-[#FFF8F6] p-6">
-          <h3 className="text-xl font-semibold text-customBlack">Recipe Suggestion</h3>
+      <section className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-5 bg-[#FFF8F6] p-5 rounded-2xl">
+        <div className="rounded-2xl p-6">
+          <h3 className="text-xl font-semibold text-customBlack">
+            Recipe Suggestion
+          </h3>
+
+          <p className="mt-3 text-tertiaryGrey leading-7">
+            {item.recipeSuggestion}
+          </p>
           <p className="mt-2 text-tertiaryGrey">Origin: {item.origin}</p>
           <ul className="mt-4 space-y-2">
             {culinaryUses.map((use: any, index: any) => (
-              <li key={index} className="rounded-lg bg-white px-3 py-2 border border-primaryGrey/40">
+              <li key={index} className="px-3 py-2">
                 {use}
               </li>
             ))}
           </ul>
         </div>
-        <div className="rounded-2xl border border-primaryGrey/60 bg-[#FFF8F6] p-6">
+
+
+        <div className="rounded-2xl p-6">
           <h3 className="text-xl font-semibold text-customBlack">Health Benefit</h3>
           <ul className="mt-4 space-y-2">
             {healthBenefits.map((benefit: any, index: number) => (
-              <li key={index} className="rounded-lg bg-white px-3 py-2 border border-primaryGrey/40">
+              <li key={index} className="px-3 py-2">
                 {benefit}
               </li>
             ))}

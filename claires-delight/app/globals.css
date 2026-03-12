@@ -211,10 +211,6 @@ body {
 }
 
 /* Enhanced touch optimization styles */
-.touch-device {
-    /* Styles applied when touch device is detected */
-}
-
 .touch-device button,
 .touch-device .btn {
     min-height: 44px;

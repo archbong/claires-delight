@@ -5,6 +5,7 @@ import Pagination from "@/app/components/pagination/Pagination";
 import RecipeCard from "@/app/components/recipe/RecipeCard";
 import { Recipe } from "@/typings";
 import { Suspense, useMemo, useState } from "react";
+import Unavailable from "../Unavailable";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -25,9 +26,12 @@ const RecipeList: React.FC<RecipeListProps> = ({ recipes = [] }) => {
     return recipes.slice(startIndex, startIndex + ITEMS_PER_PAGE);
   }, [recipes, currentPage]);
 
-  if (!recipes.length) {
-    return <p>No recipes available</p>;
-  }
+
+if (!recipes.length) {
+  return (
+  <Unavailable itemType="recipes" />
+  );
+}
 
   return (
     <BodyWrapper>

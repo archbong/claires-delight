@@ -7,6 +7,8 @@ import Pagination from "@/app/components/pagination/Pagination";
 import PostCard from "@/app/components/blog/PostCard";
 import { BlogPost } from "@/typings";
 import Breadcrumb from "../Breadcrumb";
+import { LuChefHat } from "react-icons/lu";
+import Unavailable from "../Unavailable";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -84,12 +86,7 @@ export default function PostList() {
   if (!posts.length) {
     return (
       <BodyWrapper>
-        <div className="py-10 text-center">
-          <h2 className="text-xl font-semibold text-customBlack">No blog posts yet</h2>
-          <p className="text-tertiaryGrey mt-2">
-            New articles will appear here once they are published.
-          </p>
-        </div>
+       <Unavailable itemType="blog posts" />
       </BodyWrapper>
     );
   }
@@ -104,7 +101,7 @@ export default function PostList() {
         ]}
       />
 
-      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
+      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 mt-4 justify-items-center">
         {paginatedPosts.map((post: BlogPost) => (
           <Suspense key={post._id ?? post.slug}>
             <PostCard post={post} />

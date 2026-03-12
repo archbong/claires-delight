@@ -20,6 +20,8 @@ import MobileFilterHeader from "./MobileFilterHeader";
 import SpiceCardNotProduct from "./SpiceCardNotFound";
 import ProductGridSkeleton from "./ProductGridSkeleton";
 import { useProductsStore } from "@/app/store/productsStore";
+import { LuChefHat } from "react-icons/lu";
+import Unavailable from "../Unavailable";
 
 const ITEMS_PER_PAGE = 12;
 
@@ -115,118 +117,59 @@ const EnhancedSpiceList: React.FC<EnhancedSpiceListProps> = ({
   const hasMoreProducts = currentPage < totalPages && enableInfiniteScroll;
 
   if (!Array.isArray(products) || products.length === 0) {
-    return null;
+     return (
+        <Unavailable itemType="spices" />
+      );
   }
 
   return (
-  <BodyWrapper>
-    <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
-      {isMobile && (
-        <MobileFilterHeader
-          appliedFilters={appliedFilters}
-          onClearAll={handleClearAllFilters}
-          onRemoveFilter={handleRemoveFilter}
-          onOpenFilters={handleOpenFilters}
-          resultsCount={filteredProducts.length}
-        />
-      )}
+ <BodyWrapper>
+  <div className="flex flex-col lg:flex-row items-start gap-8">
 
-      {/* Sidebar */}
-      <div className="lg:w-48 flex-shrink-0">
-        <EnhancedProductFilter
-          onFilter={handleFilterChange}
-          isMobile={isMobile}
-          onClearAll={handleClearAllFilters}
-        />
-      </div>
+    {isMobile && (
+      <MobileFilterHeader
+        appliedFilters={appliedFilters}
+        onClearAll={handleClearAllFilters}
+        onRemoveFilter={handleRemoveFilter}
+        onOpenFilters={handleOpenFilters}
+        resultsCount={filteredProducts.length}
+      />
+    )}
 
-      {/* Main content */}
-      <div id="spices" className={`flex-1 ${isMobile ? "mt-20" : ""}`}>
-        
-        {/* Header: title left, search icon right */}
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="font-bold text-lg text-customBlack">
-            {isMobile ? "Spices" : "All Spices"} ({filteredProducts.length})
-          </h2>
-          <div className="relative" ref={searchRef}>
-            {showSearchInput ? (
-              <div className="flex items-center relative">
-                <input
-                  type="text"
-                  name="search"
-                  className="w-40 sm:w-48 h-9 pl-3 pr-9 rounded-lg border border-secondaryGrey focus:outline-none focus:ring-2 focus:ring-green text-sm transition-all duration-200"
-                  placeholder="Search spices..."
-                  value={inputValue}
-                  onChange={handleSearchChange}
-                  autoFocus
-                />
-                <IoSearch className="absolute right-2.5 h-4 w-4 text-tertiaryGrey" />
-              </div>
-            ) : (
-              <button
-                onClick={() => setShowSearchInput(true)}
-                aria-label="Open search"
-              >
-                <IoSearch className="w-5 h-5 text-tertiaryGrey hover:text-customBlack transition-colors" />
-              </button>
-            )}
-          </div>
-        </div>
-
-        {/* Grid */}
-        <div className="mb-8">
-          {loading ? (
-            <ProductGridSkeleton count={ITEMS_PER_PAGE} />
-          ) : (
-            <>
-              <div className="grid grid-cols-2 gap-4">
-                {displayedProducts.length > 0 ? (
-                  displayedProducts.map((product: Product) => (
-                    <Suspense
-                      key={product._id}
-                      fallback={<div className="animate-pulse bg-orange/10 rounded-2xl h-56" />}
-                    >
-                      <EnhancedSpiceCard product={product} />
-                    </Suspense>
-                  ))
-                ) : (
-                  <div className="col-span-2">
-                    <Suspense><SpiceCardNotProduct /></Suspense>
-                  </div>
-                )}
-              </div>
-
-              {enableInfiniteScroll && hasMoreProducts && (
-                <div className="flex justify-center mt-8">
-                  <button
-                    onClick={async () => {
-                      setIsLoadingMore(true);
-                      await new Promise((resolve) => setTimeout(resolve, 500));
-                      setCurrentPage((prev) => prev + 1);
-                      setIsLoadingMore(false);
-                    }}
-                    disabled={isLoadingMore}
-                    className="btn bg-green hover:bg-orange text-white border-none min-w-32"
-                  >
-                    {isLoadingMore ? <span className="loading loading-spinner loading-sm" /> : "Load More"}
-                  </button>
-                </div>
-              )}
-            </>
-          )}
-        </div>
-
-        {!enableInfiniteScroll && totalPages > 1 && (
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onNextPage={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-            onPreviousPage={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-          />
-        )}
-      </div>
+    {/* Sidebar */}
+    <div className="lg:w-[260px] xl:w-[280px] flex-shrink-0">
+      <EnhancedProductFilter
+        onFilter={handleFilterChange}
+        isMobile={isMobile}
+        onClearAll={handleClearAllFilters}
+      />
     </div>
-  </BodyWrapper>
+
+    {/* Main content */}
+    <div id="spices" className={`flex-1 ${isMobile ? "mt-20" : ""}`}>
+
+      {/* Header */}
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="font-bold text-lg text-customBlack">
+          {isMobile ? "Spices" : "All Spices"} ({filteredProducts.length})
+        </h2>
+      </div>
+
+      {/* Grid */}
+      <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {displayedProducts.map((product: Product) => (
+          <Suspense
+            key={product._id}
+            fallback={<div className="animate-pulse bg-orange/10 rounded-2xl h-56" />}
+          >
+            <EnhancedSpiceCard product={product} />
+          </Suspense>
+        ))}
+      </div>
+
+    </div>
+  </div>
+</BodyWrapper>
 );
 };
 

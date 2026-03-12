@@ -27,10 +27,10 @@ export default function CulinaryInspiration() {
           <div className="grid md:grid-cols-2 items-center gap-10 mt-12 px-6 pb-16">
 
             {/* IMAGE SIDE */}
-<div className="relative flex justify-center md:justify-start">
+            <div className="relative flex justify-center md:justify-start">
 
-  <div
-    className="
+              <div
+                className="
       relative
       w-[720px] h-[720px]
       md:w-[780px] md:h-[780px]
@@ -41,23 +41,23 @@ export default function CulinaryInspiration() {
       transition-transform duration-500
       group-hover:scale-105
     "
-  >
-    <Image
-      src="https://res.cloudinary.com/dzd51q99i/image/upload/v1716381751/clairesdelight/landing-page/culinary-inspirations/Recipe_Image_ybmfed.png"
-      alt="culinary"
-      fill
-      className="object-cover group-hover:opacity-0 transition-opacity duration-500"
-    />
+              >
+                <Image
+                  src="https://res.cloudinary.com/dzd51q99i/image/upload/v1716381751/clairesdelight/landing-page/culinary-inspirations/Recipe_Image_ybmfed.png"
+                  alt="culinary"
+                  fill
+                  className="object-cover group-hover:opacity-0 transition-opacity duration-500"
+                />
 
-    <Image
-      src="https://res.cloudinary.com/dzd51q99i/image/upload/v1717189992/clairesdelight/landing-page/culinary-inspirations/Recipe_1_rurwtc.png"
-      alt="culinary hover"
-      fill
-      className="object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-    />
-  </div>
+                <Image
+                  src="https://res.cloudinary.com/dzd51q99i/image/upload/v1717189992/clairesdelight/landing-page/culinary-inspirations/Recipe_1_rurwtc.png"
+                  alt="culinary hover"
+                  fill
+                  className="object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                />
+              </div>
 
-</div>
+            </div>
             {/* TEXT SIDE */}
             <div className="space-y-6 text-center md:text-left">
 

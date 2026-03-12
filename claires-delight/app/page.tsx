@@ -4,11 +4,11 @@ import EnhancedNavbar from "./components/header/navbar/EnhancedNavbar";
 import ResponsiveFooter from "./components/footer/responsive/ResponsiveFooter";
 import Hero from "./components/LandingPage/Hero";
 import Choose from "./components/LandingPage/Choose";
-import Spice from "./components/header/Spice";
 import CulinaryInspiration from "./components/LandingPage/CulinaryInspirations";
 import CustomerReview from "./components/LandingPage/CustomerReview";
 import RecipeVisuals from "./components/LandingPage/RecipeVisuals";
 import Ourservice from "./components/LandingPage/OurService";
+import Spice from "./components/LandingPage/Spice";
 
 export default function Home() {
   const handleSearch = (query: string) => {

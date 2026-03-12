@@ -13,9 +13,10 @@ export default function RecipeCard({ recipe }: any) {
           <Image
             src={recipe.image}
             alt={recipe.title}
-            width={700}
-            height={500}
+            width={800}
+            height={800}
             loading="lazy"
+            className="rounded-t-3xl"
           />
         </figure>
       </Suspense>

@@ -44,6 +44,7 @@ export const useWishlistStore = create<WishlistState>()(
             wishlistItems: [...state.wishlistItems, product],
           }));
         }
+        console.log("Added to wishlist:", product);
       },
 
       removeFromWishlist: (productId) => {

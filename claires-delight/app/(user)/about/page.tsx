@@ -179,7 +179,7 @@ export default function Page() {
                 <HeaderText>HAVE ANY QUESTIONS ABOUT US?</HeaderText>
                 <Link href="/contact">
                   <Button
-                    className="btn mt-10 text-white w-48"
+                    className="btn border border-white p-5 mt-10 text-white w-[10rem] h-[3rem] hover:bg-white hover:text-orange"
                     text="Contact Us"
                   />
                 </Link>
