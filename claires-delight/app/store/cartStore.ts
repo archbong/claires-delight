@@ -225,7 +225,8 @@ export const useCartStore = create<CartState>()(
         const discountAmount = subtotal > 50 ? subtotal * 0.1 : 0;
 
         // Calculate shipping (example: free shipping over $100, otherwise $10)
-        const shippingCost = subtotal > 100 ? 0 : 10;
+        // Empty carts should never have a shipping charge.
+        const shippingCost = subtotal === 0 ? 0 : subtotal > 100 ? 0 : 10;
 
         // Calculate tax (example: 8% sales tax)
         const taxableAmount = subtotal - discountAmount;
