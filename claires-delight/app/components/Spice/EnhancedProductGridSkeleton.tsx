@@ -1,8 +1,4 @@
 "use client";
-// EnhancedProductGridSkeleton component for modern loading states
-// Kiro Requirement: 4.4 - Visual Feedback
-// Kiro Requirement: 6.2 - Performance Optimization
-
 import { FC } from "react";
 
 interface EnhancedProductGridSkeletonProps {
