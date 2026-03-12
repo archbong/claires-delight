@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getPost } from "@/lib/data";
 
@@ -6,12 +6,14 @@ const getPostBySlugOrId = async (slug: string) =>
   (await prisma.post.findUnique({ where: { slug }, select: { id: true } })) ??
   (await prisma.post.findUnique({ where: { id: slug }, select: { id: true } }));
 
-export async function GET(
-  _request: Request,
-  { params }: { params: { slug: string } },
-) {
+type RouteContext = {
+  params: Promise<{ slug: string }>;
+};
+
+export async function GET(_request: NextRequest, context: RouteContext) {
   try {
-    const post = await getPost(params.slug);
+    const { slug } = await context.params;
+    const post = await getPost(slug);
     if (!post) {
       return NextResponse.json({ message: "Post not found" }, { status: 404 });
     }
@@ -22,12 +24,10 @@ export async function GET(
   }
 }
 
-export async function PUT(
-  request: Request,
-  { params }: { params: { slug: string } },
-) {
+export async function PUT(request: NextRequest, context: RouteContext) {
   try {
-    const existing = await getPostBySlugOrId(params.slug);
+    const { slug } = await context.params;
+    const existing = await getPostBySlugOrId(slug);
     if (!existing) {
       return NextResponse.json({ message: "Post not found" }, { status: 404 });
     }
@@ -52,12 +52,10 @@ export async function PUT(
   }
 }
 
-export async function DELETE(
-  _request: Request,
-  { params }: { params: { slug: string } },
-) {
+export async function DELETE(_request: NextRequest, context: RouteContext) {
   try {
-    const existing = await getPostBySlugOrId(params.slug);
+    const { slug } = await context.params;
+    const existing = await getPostBySlugOrId(slug);
     if (!existing) {
       return NextResponse.json({ message: "Post not found" }, { status: 404 });
     }
@@ -68,4 +66,3 @@ export async function DELETE(
     return NextResponse.json({ message: "Failed to delete post" }, { status: 500 });
   }
 }
-
