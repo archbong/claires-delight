@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import BodyWrapper from "@/app/components/layout/BodyWrapper";
 import Subtitle from "@/app/components/typography/Subtitle";
 import SpiceTitle from "@/app/components/Spice/SpiceTitle";
@@ -9,6 +9,7 @@ import Button from "@/app/components/button/Button";
 import ServiceCard from "@/app/components/LandingPage/our-service/ServiceCard";
 import { useCartStore } from "@/app/store/cartStore";
 import { formatNaira } from "@/lib/utils/currency";
+import Breadcrumb from "../Breadcrumb";
 
 export default function PaymentOrder() {
   const router = useRouter();
@@ -23,34 +24,31 @@ export default function PaymentOrder() {
   };
 
   if (!items.length) {
-    return (
-      <BodyWrapper>
-        <div className="py-16 text-center">
-          <Subtitle title="No items to checkout" />
-          <p className="text-tertiaryGrey mt-2 mb-6">
-            Your cart is empty. Add spices before proceeding to payment.
-          </p>
-          <Link href="/shop-spices" className="btn bg-orange hover:bg-green text-white border-none">
-            Shop Spices
-          </Link>
-        </div>
-      </BodyWrapper>
-    );
+    // return (
+    //   <BodyWrapper>
+    //     <div className="py-16 text-center">
+    //       <Subtitle title="No items to checkout" />
+    //       <p className="text-tertiaryGrey mt-2 mb-6">
+    //         Your cart is empty. Add spices before proceeding to payment.
+    //       </p>
+    //       <Link href="/shop-spices" className="btn bg-orange hover:bg-green text-white border-none">
+    //         Shop Spices
+    //       </Link>
+    //     </div>
+    //   </BodyWrapper>
+    // );
+    redirect('/shop-spices')
   }
 
   return (
     <BodyWrapper>
-      <div className="text-sm breadcrumbs mb-4">
-        <ul>
-          <li>
-            <Link href="/shop-spices">Shop Spices</Link>
-          </li>
-          <li>
-            <Link href="/cart">Cart</Link>
-          </li>
-          <li>Checkout</li>
-        </ul>
-      </div>
+      <Breadcrumb
+              items={[
+                { label: "Payment Process", href: "/payment-proces" },
+                { label: "Process payment", href: "/payment-process" },
+                { label: "Payment Process" },
+              ]}
+            />
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2">

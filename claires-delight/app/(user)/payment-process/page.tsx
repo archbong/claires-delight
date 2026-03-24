@@ -1,10 +1,13 @@
-import ErrorBoundary from "@/app/components/ErrorBoundary";
+import ResponsiveFooter from "@/app/components/footer/responsive/ResponsiveFooter";
+import EnhancedNavbar from "@/app/components/header/navbar/EnhancedNavbar";
 import PaymentOrder from "@/app/components/order/PaymentOrder";
 
 export default function Page() {
   return (
-    <ErrorBoundary>
+   <>
+    <EnhancedNavbar />
       <PaymentOrder />
-    </ErrorBoundary>
+      <ResponsiveFooter />
+   </>
   );
 }

@@ -113,7 +113,6 @@ export default async function Page({
     <>
       <Navbar />
       <BodyWrapper>
-
         <Breadcrumb
           items={[
             { label: "Shop Spices", href: "/shop-spices" },
@@ -121,7 +120,6 @@ export default async function Page({
             { label: spice?.name ?? "Spice Detail" },
           ]}
         />
-
         <div className="flex justify-center">
           <SpiceDetailCard item={spice} />
         </div>

@@ -386,44 +386,6 @@ const EnhancedNavbar: React.FC<EnhancedNavbarProps> = ({ onSearch }) => {
               </button>
             </div>
           </div>
-
-          {/* Mobile Navigation Dropdown */}
-          {/* {isMobileMenuOpen && (
-            <div className="lg:hidden border-t border-gray-200 mt-2 pt-4 pb-4 bg-white rounded-lg shadow-lg">
-              <nav
-                className="flex flex-col space-y-3"
-                aria-label="Mobile navigation"
-              >
-                {navLinks.map((link) => (
-                  <Link
-                    key={link.path}
-                    href={link.path}
-                    className={cn(
-                      "px-4 py-2 rounded-md text-sm font-medium transition-colors",
-                      "hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-orange focus:ring-offset-2",
-                      pathname === link.path
-                        ? "text-red bg-red/10 font-semibold"
-                        : "text-customBlack",
-                    )}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    aria-current={pathname === link.path ? "page" : undefined}
-                  >
-                    {link.title}
-                  </Link>
-                ))}
-                <div className="px-4 pt-2">
-                  <Link
-                    href="/contact"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    <Button variant="primary" size="sm" className="w-full">
-                      Contact Us
-                    </Button>
-                  </Link>
-                </div>
-              </nav>
-            </div>
-          )} */}
         </div>
       </header>
 

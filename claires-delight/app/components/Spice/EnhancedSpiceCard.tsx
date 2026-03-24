@@ -194,7 +194,7 @@ const setCartError = useCartStore((s) => s.setError);
               </h2>
             </Link>
 
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center gap-4">
               <p className="text-customBlack font-extrabold text-2xl">
                 {formatNaira(product?.price)}
               </p>

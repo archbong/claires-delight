@@ -7,7 +7,7 @@ import Link from "next/link";
 
 export default function CulinaryInspiration() {
   return (
-    <section className="py-16 lg:py-24">
+    <section className="">
       <BodyWrapper>
         <div className="group bg-lightGreen hover:bg-tomatoRed hover:text-white transition-all duration-500 rounded-sm overflow-hidden">
 
@@ -38,8 +38,6 @@ export default function CulinaryInspiration() {
       overflow-hidden
       -ml-40
       -mb-48
-      transition-transform duration-500
-      group-hover:scale-105
     "
               >
                 <Image

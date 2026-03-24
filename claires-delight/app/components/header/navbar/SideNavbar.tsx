@@ -65,3 +65,4 @@ const SideNavbar: React.FC<SideNavbarProps> = ({ onClose }) => {
 };
 
 export default SideNavbar;
+

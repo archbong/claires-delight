@@ -44,7 +44,7 @@ export default function CartItemView({ item }: Readonly<Props>) {
     <ServiceCard className="w-full p-4 sm:p-5">
       <div className="grid grid-cols-1 md:grid-cols-4 gap-5 md:gap-6 place-content-center">
         <Suspense fallback={<Loading />}>
-          <div className="rounded-2xl p-1 flex md:block justify-center">
+          <div className="rounded-2xl p-1 flex md:block">
             <div className="relative w-32 h-32 sm:w-40 sm:h-40 overflow-hidden rounded-xl bg-lighterGreen border border-primaryGrey/40 shrink-0">
               <Image
                 src={imageSrc}
@@ -62,11 +62,9 @@ export default function CartItemView({ item }: Readonly<Props>) {
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <div className="flex items-center">
               <span className="flex text-orange">
-                <IoIosStar />
-                <IoIosStar />
-                <IoIosStar />
-                <IoIosStar />
-                <IoIosStar />
+                {[1,4].map((i) => (
+                  <IoIosStar />
+                ))}
               </span>
               <p className="ml-2 text-sm text-tertiaryGrey">20 Reviews</p>
             </div>

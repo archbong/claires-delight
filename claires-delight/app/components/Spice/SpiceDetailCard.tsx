@@ -168,31 +168,32 @@ export default function SpiceDetailCard({ item }: any) {
               <div className="mt-6">
                 <p className="text-sm text-tertiaryGrey mb-2">Quantity</p>
 
-                <div className="flex items-center gap-14">
-                  <div className="border border-primaryGrey flex items-center rounded-lg overflow-hidden p-2">
+                <div className="flex items-center gap-5 md:gap-14">
+                  <div className="w-[9rem] h-[2rem] md:w-[6rem] md:h-[3rem] border border-primaryGrey flex items-center rounded-lg overflow-hidden md:p-2">
                     <button
-                      className="px-4 py-2 hover:bg-gray-100"
+                      className="hover:bg-gray-100"
                       onClick={() => handleQuantityChange(quantity - 1)}
                     >
                       <AiOutlineMinus />
                     </button>
 
-                    <span className="px-5">{quantity}</span>
+                    <span className="p-5">{quantity}</span>
 
                     <button
-                      className="px-4 py-2 hover:bg-gray-100"
+                      className="hover:bg-gray-100"
                       onClick={() => handleQuantityChange(quantity + 1)}
                     >
                       <MdOutlineAdd />
                     </button>
                   </div>
 
-                  <button className="bg-orange text-white px-10 py-3 rounded-lg font-medium">
+                  <button 
+                    className="bg-orange text-white w-[12rem] h-[3rem]  rounded-lg font-medium">
                     Buy Now
                   </button>
 
                   <button 
-                    className="border border-orange text-orange px-8 py-3 rounded-lg font-medium"
+                    className="w-[12rem] h-[3rem] border border-orange text-orange rounded-lg font-medium"
                     onClick={handleAddToCart}
                     disabled={isAddingToCart || cartLoading || isOutOfStock}
                   >

@@ -68,9 +68,7 @@ export default function RecipeDetail({ item }: any) {
       {/* Best Selling Spices  */}
       <div className="my-12 text-center">
         <div className="flex items-center justify-center gap-3 mb-3">
-          <span className="block w-16 h-px bg-green" />
           <Title>{"Best Selling Spices"}</Title>
-          <span className="block w-16 h-px bg-green" />
         </div>
         <Paragraph>
           Recommended spices for you. Make a tasty and delicious meal using any

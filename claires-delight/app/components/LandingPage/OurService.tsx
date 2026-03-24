@@ -12,9 +12,7 @@ export default function OurService() {
       {/* Title with green lines */}
       <div className="text-center my-10">
         <div className="flex items-center justify-center gap-3 mb-3">
-          <span className="block w-24 h-px bg-green" />
           <Title>{"Our Services"}</Title>
-          <span className="block w-24 h-px bg-green" />
         </div>
         <Paragraph>
           A spice business can offer a variety of services beyond just selling spices.
@@ -70,9 +68,9 @@ export default function OurService() {
           {/* Future Services */}
           <div>
             <h2 className="font-bold text-lg text-customBlack mb-4">Future Services</h2>
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-col-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
               {futureServices.map((service) => (
-                <ServiceCard key={service.id}>
+                <ServiceCard key={service.id} className={'h-[10rem]'}>
                   <FutureService
                     imageIcon={service.image}
                     text={service.text}

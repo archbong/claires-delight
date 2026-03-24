@@ -17,14 +17,14 @@ const Spice = () => {
   }
 
   return (
-    <div className="lg:mt-16 md:mt-16 mt-16">
+    <div className="lg:mt-16 md:mt-16 mt-16 px-5">
       <Title>{"Our Spice Collection"} </Title>
       <Paragraph>
         {
           "Explore our diverse spice collection sourced from around the globe, each ingredient carefully chosen for its exceptional quality and distinctive taste"
         }
       </Paragraph>
-      <div className="flex justify-center md:px-10 lg:px-10 md:mt-5 lg:mt-5 md:mb-16 lg:mb-16">
+      <div className="lg:flex md:flex md:justify-center lg:justify-center md:px-10 lg:px-10 md:mt-5 lg:mt-5">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {products.slice(0, 12).map((product: any) => (
             <Suspense key={product._id}>

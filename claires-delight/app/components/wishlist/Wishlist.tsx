@@ -16,8 +16,7 @@ import {
 } from "react-icons/fi";
 import { useCartStore, useWishlistStore } from "@/app/store";
 import ResponsiveFooter from "../footer/responsive/ResponsiveFooter";
-import Navbar from "../header/navbar/Navbar";
-import { use } from "react";
+import EnhancedNavbar from "../header/navbar/Navbar";
 
 export default function WishlistPage() {
     const isLoading = useWishlistStore((state) => state.isLoading)
@@ -99,7 +98,7 @@ export default function WishlistPage() {
 
     return (
         <div>
-            <Navbar />
+            <EnhancedNavbar />
             <div className="min-h-screen py-12">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
@@ -163,7 +162,7 @@ export default function WishlistPage() {
 
                                 <Link
                                     href="/shop-spices"
-                                    className="group inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-xl hover:from-green-500 hover:to-green-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                                    className="group inline-flex items-center gap-3 px-8 py-4 bg-orange text-white rounded-xl hover:from-green-500 hover:to-green-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                                 >
                                     <FiPlus className="w-5 h-5 group-hover:rotate-90 transition-transform duration-300" />
                                     Browse Spices

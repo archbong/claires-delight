@@ -22,12 +22,11 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
   const backdropRef = useRef<HTMLDivElement>(null);
 
   const navLinks = [
-    { title: "Home", path: "/", icon: "🏠" },
-    { title: "Shop Spices", path: "/shop-spices", icon: "🌶️" },
-    { title: "Recipes", path: "/recipes", icon: "📖" },
-    { title: "About Us", path: "/about", icon: "👥" },
-    { title: "Blog", path: "/blog", icon: "📝" },
-    { title: "Wishlist", path: "/wishlist", icon: "❤️" },
+    { title: "Home", path: "/" },
+    { title: "Shop Spices", path: "/shop-spices" },
+    { title: "Recipes", path: "/recipes" },
+    { title: "About Us", path: "/about" },
+    { title: "Blog", path: "/blog" },
   ];
 
   // Close menu when clicking outside or pressing Escape
@@ -93,8 +92,8 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
       <div
         ref={menuRef}
         className={cn(
-          "fixed right-0 top-0 h-full w-80 max-w-[85vw] bg-white z-50 shadow-2xl",
-          "transform transition-transform duration-300 ease-in-out",
+          "fixed right-0 top-0 h-full w-80 max-w-[85vw] bg-[#F6FFE9] z-50 shadow-2xl",
+          "transform transition-transform duration-300 ease-in-out rounded-l-3xl",
           "flex flex-col",
           isOpen ? "translate-x-0" : "translate-x-full",
         )}
@@ -103,13 +102,11 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
         aria-label="Mobile navigation menu"
       >
         {/* Header with close button */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-200">
-          <h2 className="text-lg font-semibold text-customBlack">Menu</h2>
+        <div className="flex justify-end">
           <button
             onClick={onClose}
             className={cn(
-              "p-2 rounded-full hover:bg-gray-100 transition-colors",
-              "focus:outline-none focus:ring-2 focus:ring-orange focus:ring-offset-2",
+              "p-3 rounded-full hover:bg-gray-100 transition-colors",
               "touch-device:touch-optimized",
             )}
             aria-label="Close menu"
@@ -120,7 +117,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
 
         {/* Navigation links */}
         <nav
-          className="flex-1 overflow-y-auto p-6"
+          className="overflow-y-auto p-6"
           aria-label="Mobile navigation"
         >
           <div className="space-y-2">
@@ -129,42 +126,49 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
                 key={link.path}
                 href={link.path}
                 className={cn(
-                  "flex items-center px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200",
-                  "hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-orange focus:ring-offset-2",
+                  "flex items-center px-2 py-2 text-sm border-b border-gray-200 ransition-all duration-200",
                   pathname === link.path
-                    ? "bg-red/10 text-red font-semibold"
+                    ? "text-orange font-semibold"
                     : "text-customBlack hover:text-orange",
                 )}
+                // className="flex items-center text-sm py-2"
                 onClick={handleLinkClick}
                 aria-current={pathname === link.path ? "page" : undefined}
               >
-                <span className="mr-3 text-lg" aria-hidden="true">
-                  {link.icon}
-                </span>
                 {link.title}
-                {link.path === "/wishlist" && wishlistItems.length > 0 && (
+                {/* {link.path === "/wishlist" && wishlistItems.length > 0 && (
                   <span className="ml-auto bg-red text-white text-xs px-2 py-1 rounded-full">
                     {wishlistItems.length > 9 ? "9+" : wishlistItems.length}
                   </span>
-                )}
+                )} */}
               </Link>
             ))}
           </div>
+
+         
         </nav>
+         <div className="relative top-[8%] w-full flex justify-center">
+          <Link href="/contact">
+            <button onClick={handleLinkClick}
+             className="btn w-[150px] h-[50px] bg-orange border-none text-white font-normal text-xs hover:bg-orange ">
+              Contact Us
+            </button>
+          </Link>
+        </div>
 
         {/* Footer with contact button */}
-        <div className="p-6 border-t border-gray-200 bg-gray-50">
-          <Link href="/contact" onClick={handleLinkClick}>
+        {/* <div className="p-6 border-t border-gray-200 bg-gray-50">
+          <Link href="/contact" >
             <Button
-              variant="primary"
               size="sm"
-              className="w-full justify-center"
+              className="w-full justify-center bg-organge hover:bg-orange/90 text-white transition-colors"
               aria-label="Contact us"
             >
               Contact Us
             </Button>
           </Link>
-        </div>
+        </div> */}
+        
       </div>
     </>
   );

@@ -5,6 +5,7 @@ import Title from "../typography/Title";
 import Paragraph from "../typography/Paragraph";
 import PageButton from "../button/PageButton";
 import Unavailable from "../Unavailable";
+import BodyWrapper from "../layout/BodyWrapper";
 
 interface CustomerReviewItem {
   id: string;
@@ -69,7 +70,7 @@ function CustomerReview() {
   const { name, description } = customerReviews[currentIndex];
 
   return (
-    <div>
+    <BodyWrapper>
       <Title>{"Customer's Review"} </Title>
       <Paragraph>
         {
@@ -87,7 +88,7 @@ function CustomerReview() {
         </div>
       </div>
       <PageButton onNext={handleNext} onPrev={handlePrev} />
-    </div>
+    </BodyWrapper>
   );
 }
 

@@ -7,7 +7,7 @@ export default function Title({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <div>
-      <div className="flex justify-center items-center gap-3 lg:gap-6">
+      <div className="flex justify-center items-center gap-1 lg:gap-6">
         <Image
           src={Line1}
           alt="Line1"
