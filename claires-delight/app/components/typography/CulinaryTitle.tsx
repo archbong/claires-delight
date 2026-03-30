@@ -18,14 +18,14 @@ export default function CulinaryTitle({
         <Image
           src={isHover? HoverLine1 : Line1 }
           alt="Line1"
-          width={200}
+          width={80}
           height={0}
         />
-        <div className="text-[17px] md:text-2xl font-semibold">{children}</div>
+        <div className="text-sm md:text-2xl font-semibold">{children}</div>
         <Image
           src={isHover? HoverLine2 : Line2}
           alt="Line2"
-          width={200}
+          width={80}
           height={0}
         />
       </div>

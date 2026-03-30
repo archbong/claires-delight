@@ -590,7 +590,7 @@ async function main() {
       images: {
         create: [
           {
-            url: "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d",
+            url: `${spiceImage}/suya-spice.png`,
             altText: "Authentic Suya Spice Mix",
           },
         ],

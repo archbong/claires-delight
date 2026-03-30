@@ -117,60 +117,75 @@ const EnhancedSpiceList: React.FC<EnhancedSpiceListProps> = ({
   const hasMoreProducts = currentPage < totalPages && enableInfiniteScroll;
 
   if (!Array.isArray(products) || products.length === 0) {
-     return (
-        <Unavailable itemType="spices" />
-      );
+    return (
+      <Unavailable itemType="spices" />
+    );
   }
 
   return (
- <BodyWrapper>
-  <div className="flex flex-col lg:flex-row px-5">
+    <BodyWrapper>
+      <div className="flex flex-col lg:flex-row px-5">
+        {isMobile && (
+          <MobileFilterHeader
+            appliedFilters={appliedFilters}
+            onClearAll={handleClearAllFilters}
+            onRemoveFilter={handleRemoveFilter}
+            onOpenFilters={handleOpenFilters}
+            resultsCount={filteredProducts.length}
+          />
+        )}
 
-    {isMobile && (
-      <MobileFilterHeader
-        appliedFilters={appliedFilters}
-        onClearAll={handleClearAllFilters}
-        onRemoveFilter={handleRemoveFilter}
-        onOpenFilters={handleOpenFilters}
-        resultsCount={filteredProducts.length}
-      />
-    )}
+        <div className="mx-auto w-full max-w-7xl">
+          <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8 justify-center">
 
-    {/* Sidebar */}
-    <div className="lg:w-[260px] xl:w-[280px] flex-shrink-0">
-      <EnhancedProductFilter
-        onFilter={handleFilterChange}
-        isMobile={isMobile}
-        onClearAll={handleClearAllFilters}
-      />
-    </div>
+            {/* Sidebar */}
+            <aside className="hidden lg:block">
+              <EnhancedProductFilter
+                onFilter={handleFilterChange}
+                isMobile={isMobile}
+                onClearAll={handleClearAllFilters}
+              />
+            </aside>
 
-    {/* Main content */}
-    <div id="spices" className={`flex-1 ${isMobile ? "mt-20" : ""}`}>
+            {/* Main Content */}
+            <main id="spices" className={`${isMobile ? "mt-20" : ""}`}>
 
-      {/* Header */}
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="font-bold text-lg text-customBlack">
-          {isMobile ? "Spices" : "All Spices"} ({filteredProducts.length})
-        </h2>
+              {/* Header */}
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="font-bold text-lg text-customBlack">
+                  {isMobile ? "Spices" : "All Spices"} ({filteredProducts.length})
+                </h2>
+
+                <IoSearch className="text-xl cursor-pointer" />
+              </div>
+
+              {/* Products Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-2 gap-6">
+                {displayedProducts.map((product: Product) => (
+                  <Suspense
+                    key={product._id}
+                    fallback={
+                      <div className="animate-pulse bg-orange/10 rounded-2xl h-56" />
+                    }
+                  >
+                    <EnhancedSpiceCard product={product} />
+                  </Suspense>
+                ))}
+              </div>
+            </main>
+          </div>
+        </div>
       </div>
-
-      {/* Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {displayedProducts.map((product: Product) => (
-          <Suspense
-            key={product._id}
-            fallback={<div className="animate-pulse bg-orange/10 rounded-2xl h-56" />}
-          >
-            <EnhancedSpiceCard product={product} />
-          </Suspense>
-        ))}
+      <div className="pt-5">
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onNextPage={() => setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages))}
+          onPreviousPage={() => setCurrentPage((prevPage) => Math.max(prevPage - 1, 1))}
+        />
       </div>
-
-    </div>
-  </div>
-</BodyWrapper>
-);
+    </BodyWrapper>
+  );
 };
 
 export default EnhancedSpiceList;

@@ -25,13 +25,13 @@ function Choose() {
   }, []);
 
   return (
-    <div className="mt-10"
+    <div
     style={{
       backgroundImage: `url('https://res.cloudinary.com/dzd51q99i/image/upload/v1722039604/clairesdelight/why-choose-us/Image_2_iznayf.png')`,
       backgroundSize: 'cover',
       backgroundPosition: 'center',
     }}>
-      <Title>{"Why Choose Us"} </Title>
+      <div className="pt-5"><Title>{"Why Choose Us"} </Title></div>
       <Paragraph>
         {
           "At our spice website, we prioritize quality, flavor, and purity, ensuring each product adds an exceptional touch to your dishes"

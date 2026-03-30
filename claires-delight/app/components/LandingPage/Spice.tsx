@@ -25,8 +25,8 @@ const Spice = () => {
         }
       </Paragraph>
       <div className="lg:flex md:flex md:justify-center lg:justify-center md:px-10 lg:px-10 md:mt-5 lg:mt-5">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {products.slice(0, 12).map((product: any) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 p-5">
+          {products.slice(0, 6).map((product: any) => (
             <Suspense key={product._id}>
               <EnhancedSpiceCard product={product} />
             </Suspense>

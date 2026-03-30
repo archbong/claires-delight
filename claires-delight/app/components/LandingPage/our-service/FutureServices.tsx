@@ -17,7 +17,7 @@ export default function FutureService({ imageIcon, text }: Readonly<FutureServic
         height={44}
         className="object-contain"
       />
-      <p className="text-sm text-center text-customBlack leading-snug">{text}</p>
+      <p className="text-center text-customBlack leading-snug">{text}</p>
     </div>
   );
 }

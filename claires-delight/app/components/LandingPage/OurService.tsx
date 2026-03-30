@@ -22,26 +22,31 @@ export default function OurService() {
       </div>
 
       {/* Two-column layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start px-4 lg:px-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-10 px-4 lg:px-8 place-items-center">
 
         {/* Left: bullet points */}
-        <div className="space-y-5 text-sm text-customBlack leading-7 lg:pt-10">
+        <div className="max-w-md mx-auto lg:mx-0 space-y-4 text-sm text-customBlack leading-7 lg:pt-10 text-left">
           <p>
-            <span className="font-bold">Sell spices:</span> This is the core, but focus on quality, origin (local,
-            organic?), and variety (whole, ground, blends).
+            <span className="font-semibold">Sell spices:</span>{" "}
+            This is the core, but focus on quality, origin (local, organic?), and
+            variety (whole, ground, blends).
           </p>
+
           <p>
-            <span className="font-bold">Offer additional services:</span> Grinding, custom blends,
-            subscriptions, educational content (recipes, workshops), gift
-            baskets, wholesale options, or consulting.
+            <span className="font-semibold">Offer additional services:</span>{" "}
+            Grinding, custom blends, subscriptions, educational content (recipes,
+            workshops), gift baskets, wholesale options, or consulting.
           </p>
+
           <p>
-            <span className="font-bold">Stand out:</span> Consider a niche focus (regional cuisine, unique
-            blends) or sustainability practices.
+            <span className="font-semibold">Stand out:</span>{" "}
+            Consider a niche focus (regional cuisine, unique blends) or sustainability
+            practices.
           </p>
+
           <p>
-            <span className="font-bold">Build a community:</span> Engage customers through online presence,
-            events, and forums.
+            <span className="font-semibold">Build a community:</span>{" "}
+            Engage customers through online presence, events, and forums.
           </p>
         </div>
 
@@ -50,7 +55,7 @@ export default function OurService() {
           {/* Available Services */}
           <div>
             <h2 className="font-bold text-lg text-customBlack mb-4">Available Services</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
               {availableServices.map((service) => (
                 <ServiceCard key={service.id}>
                   <ServiceContent
@@ -68,9 +73,9 @@ export default function OurService() {
           {/* Future Services */}
           <div>
             <h2 className="font-bold text-lg text-customBlack mb-4">Future Services</h2>
-            <div className="grid grid-col-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
+            <div className="grid grid-col-2 md:grid-cols-3 gap-3 sm:gap-4">
               {futureServices.map((service) => (
-                <ServiceCard key={service.id} className={'h-[10rem]'}>
+                <ServiceCard key={service.id} className="h-full min-h-[140px]">
                   <FutureService
                     imageIcon={service.image}
                     text={service.text}

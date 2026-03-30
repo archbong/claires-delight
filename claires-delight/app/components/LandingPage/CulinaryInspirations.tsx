@@ -12,7 +12,7 @@ export default function CulinaryInspiration() {
         <div className="group bg-lightGreen hover:bg-tomatoRed hover:text-white transition-all duration-500 rounded-sm overflow-hidden">
 
           {/* HEADER */}
-          <div className="text-center pt-12 px-6">
+          <div className="text-center pt-12 px-4 md:px-6">
             <CulinaryTitle>
               Our Culinary Inspirations
             </CulinaryTitle>
@@ -27,17 +27,19 @@ export default function CulinaryInspiration() {
           <div className="grid md:grid-cols-2 items-center gap-10 mt-12 px-6 pb-16">
 
             {/* IMAGE SIDE */}
-            <div className="relative flex justify-center md:justify-start">
+            <div className="relative flex md:justify-start order-2 md:order-1 items-end mt-10 md:mt-0">
 
               <div
                 className="
       relative
-      w-[720px] h-[720px]
-      md:w-[780px] md:h-[780px]
+      w-[280px] h-[280px]
+sm:w-[320px] sm:h-[320px]
+md:w-[500px] md:h-[500px]
+lg:w-[720px] lg:h-[720px]
       rounded-full
       overflow-hidden
-      -ml-40
-      -mb-48
+      md:-ml-40
+      md:-mb-48
     "
               >
                 <Image
@@ -57,7 +59,7 @@ export default function CulinaryInspiration() {
 
             </div>
             {/* TEXT SIDE */}
-            <div className="space-y-6 text-center md:text-left">
+            <div className="space-y-6 text-center md:text-left order-1 md:order-2">
 
               <p className="max-w-lg mx-auto md:mx-0 leading-relaxed transition-colors duration-300">
                 <span className="group-hover:hidden">

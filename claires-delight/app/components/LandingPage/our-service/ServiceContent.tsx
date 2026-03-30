@@ -18,7 +18,7 @@ export default function ServiceContent({ iconImage, description }: Readonly<Serv
           className="object-contain"
         />
       </div>
-      <p className="font-bold text-sm text-customBlack leading-snug">{description}</p>
+      <p className="font-bold leading-snug">{description}</p>
     </div>
   );
 }
