@@ -11,7 +11,7 @@ import {
 } from "react";
 import BodyWrapper from "@/app/components/layout/BodyWrapper";
 import SpiceTitle from "@/app/components/Spice/SpiceTitle";
-import { IoSearch, IoGrid, IoList } from "react-icons/io5";
+import { IoSearch, IoGrid, IoList, IoOptions } from "react-icons/io5";
 import Pagination from "@/app/components/pagination/Pagination";
 import EnhancedSpiceCard from "@/app/components/Spice/EnhancedSpiceCard";
 import { Product } from "@/typings";
@@ -123,69 +123,121 @@ const EnhancedSpiceList: React.FC<EnhancedSpiceListProps> = ({
   }
 
   return (
-    <BodyWrapper>
-      <div className="flex flex-col lg:flex-row px-5">
-        {isMobile && (
-          <MobileFilterHeader
-            appliedFilters={appliedFilters}
-            onClearAll={handleClearAllFilters}
-            onRemoveFilter={handleRemoveFilter}
-            onOpenFilters={handleOpenFilters}
-            resultsCount={filteredProducts.length}
-          />
-        )}
+  <BodyWrapper>
+    <div className="flex flex-col lg:flex-row px-5">
+      <div className="mx-auto w-full max-w-7xl">
+        <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8 justify-center">
 
-        <div className="mx-auto w-full max-w-7xl">
-          <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8 justify-center">
+          {/* Sidebar — desktop only */}
+          <aside className="hidden lg:block">
+            <EnhancedProductFilter
+              onFilter={handleFilterChange}
+              isMobile={false}
+              onClearAll={handleClearAllFilters}
+            />
+          </aside>
 
-            {/* Sidebar */}
-            <aside className="hidden lg:block">
-              <EnhancedProductFilter
-                onFilter={handleFilterChange}
-                isMobile={isMobile}
-                onClearAll={handleClearAllFilters}
-              />
-            </aside>
+          {/* Main Content */}
+          <main id="spices">
 
-            {/* Main Content */}
-            <main id="spices" className={`${isMobile ? "mt-20" : ""}`}>
+            {/* Header */}
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="font-bold text-lg text-customBlack">
+                {isMobile ? "Spices" : "All Spices"} ({filteredProducts.length})
+              </h2>
 
-              {/* Header */}
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="font-bold text-lg text-customBlack">
-                  {isMobile ? "Spices" : "All Spices"} ({filteredProducts.length})
-                </h2>
-
+              <div className="flex items-center gap-3">
                 <IoSearch className="text-xl cursor-pointer" />
+                {/* Filter icon — mobile only */}
+                {isMobile && (
+                  <IoOptions
+                    className="text-xl cursor-pointer"
+                    onClick={handleOpenFilters}
+                  />
+                )}
               </div>
+            </div>
 
-              {/* Products Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-2 gap-6">
-                {displayedProducts.map((product: Product) => (
-                  <Suspense
-                    key={product._id}
-                    fallback={
-                      <div className="animate-pulse bg-orange/10 rounded-2xl h-56" />
-                    }
+            {/* Applied filters chips — mobile only */}
+            {isMobile && appliedFilters.length > 0 && (
+              <div className="flex flex-wrap gap-2 mb-4">
+                {appliedFilters.map((filter) => (
+                  <span
+                    key={filter}
+                    className="flex items-center gap-1 bg-gray-100 text-sm px-3 py-1 rounded-full"
                   >
-                    <EnhancedSpiceCard product={product} />
-                  </Suspense>
+                    {filter}
+                    <button onClick={() => handleRemoveFilter(filter)}>
+                      ✕
+                    </button>
+                  </span>
                 ))}
+                <button
+                  onClick={handleClearAllFilters}
+                  className="text-sm text-red-500 underline"
+                >
+                  Clear all
+                </button>
               </div>
-            </main>
-          </div>
+            )}
+
+            {/* Products Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-2 gap-6">
+              {displayedProducts.map((product: Product) => (
+                <Suspense
+                  key={product._id}
+                  fallback={
+                    <div className="animate-pulse bg-orange/10 rounded-2xl h-56" />
+                  }
+                >
+                  <EnhancedSpiceCard product={product} />
+                </Suspense>
+              ))}
+            </div>
+          </main>
         </div>
       </div>
-      <div className="pt-5">
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onNextPage={() => setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages))}
-          onPreviousPage={() => setCurrentPage((prevPage) => Math.max(prevPage - 1, 1))}
+    </div>
+
+    {/* Mobile Filter Drawer */}
+    {isMobile && isFilterOpen && (
+      <>
+        {/* Backdrop */}
+        <div
+          className="fixed inset-0 bg-black/40 z-40"
+          onClick={() => setIsFilterOpen(false)}
         />
-      </div>
-    </BodyWrapper>
-  );
+        {/* Drawer */}
+        <div className="fixed top-0 right-0 h-full w-[85%] max-w-sm bg-white z-50 shadow-xl overflow-y-auto p-5">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="font-bold text-lg">Filter By</h2>
+            <button
+              onClick={() => setIsFilterOpen(false)}
+              className="text-gray-500 text-2xl leading-none"
+            >
+              ✕
+            </button>
+          </div>
+          <EnhancedProductFilter
+            onFilter={handleFilterChange}
+            isMobile={true}
+            onClearAll={handleClearAllFilters}
+          />
+        </div>
+      </>
+    )}
+
+    <div className="pt-5">
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onNextPage={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+        onPreviousPage={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+      />
+    </div>
+  </BodyWrapper>
+);
+
 };
 
 export default EnhancedSpiceList;

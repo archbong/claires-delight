@@ -9,6 +9,46 @@ import { Product } from '@/typings';
  * @param limit Maximum number of results to return (optional)
  * @returns Array of matching products
  */
+export function normalizeSearchTerm(term: string): string {
+  return term.toLowerCase().trim();
+}
+
+export function filterProductsBySearchTerm(
+  products: Product[],
+  query: string
+): Product[] {
+  const searchTerm = normalizeSearchTerm(query);
+
+  if (!searchTerm || !products.length) {
+    return [];
+  }
+
+  return products.filter((product) => {
+    const nameMatch = (product.name || "").toLowerCase().includes(searchTerm);
+    const descriptionMatch = (product.description || "").toLowerCase().includes(searchTerm);
+    const originMatch = (product.origin || "").toLowerCase().includes(searchTerm);
+    const categoryMatch = product.category?.some((cat) =>
+      (cat.title || "").toLowerCase().includes(searchTerm) ||
+      (cat.slug || "").toLowerCase().includes(searchTerm)
+    );
+    const healthMatch = product.healthBenefit?.some((ben) =>
+      (ben || "").toLowerCase().includes(searchTerm)
+    );
+    const culinaryMatch = product.culinaryUses?.some((use) =>
+      (use || "").toLowerCase().includes(searchTerm)
+    );
+
+    return (
+      nameMatch ||
+      descriptionMatch ||
+      originMatch ||
+      categoryMatch ||
+      healthMatch ||
+      culinaryMatch
+    );
+  });
+}
+
 export function searchProducts(
   products: Product[],
   query: string,
@@ -18,64 +58,57 @@ export function searchProducts(
     return [];
   }
 
-  const searchTerm = query.toLowerCase().trim();
+  const searchTerm = normalizeSearchTerm(query);
+  const matchingProducts = filterProductsBySearchTerm(products, query);
 
   // Score products based on search relevance
-  const scoredProducts = products.map(product => {
+  const scoredProducts = matchingProducts.map((product) => {
     let score = 0;
 
-    // Exact name match (highest priority)
     if (product.name.toLowerCase() === searchTerm) {
       score += 100;
     }
-
-    // Name contains search term
     if (product.name.toLowerCase().includes(searchTerm)) {
       score += 50;
     }
-
-    // Description contains search term
     if (product.description.toLowerCase().includes(searchTerm)) {
       score += 20;
     }
-
-    // Category matches
-    if (product.category?.some(cat =>
-      cat.title.toLowerCase().includes(searchTerm) ||
-      cat.slug.toLowerCase().includes(searchTerm)
-    )) {
+    if (
+      product.category?.some(
+        (cat) =>
+          (cat.title || "").toLowerCase().includes(searchTerm) ||
+          (cat.slug || "").toLowerCase().includes(searchTerm)
+      )
+    ) {
       score += 30;
     }
-
-    // Origin matches
-    if (product.origin.toLowerCase().includes(searchTerm)) {
+    if ((product.origin || "").toLowerCase().includes(searchTerm)) {
       score += 15;
     }
-
-    // Health benefits contain search term
-    if (product.healthBenefit?.some(benefit =>
-      benefit.toLowerCase().includes(searchTerm)
-    )) {
+    if (
+      product.healthBenefit?.some((benefit) =>
+        (benefit || "").toLowerCase().includes(searchTerm)
+      )
+    ) {
       score += 10;
     }
-
-    // Culinary uses contain search term
-    if (product.culinaryUses?.some(use =>
-      use.toLowerCase().includes(searchTerm)
-    )) {
+    if (
+      product.culinaryUses?.some((use) =>
+        (use || "").toLowerCase().includes(searchTerm)
+      )
+    ) {
       score += 10;
     }
 
     return { product, score };
   });
 
-  // Filter out products with no matches and sort by score
   const filtered = scoredProducts
-    .filter(item => item.score > 0)
+    .filter((item) => item.score > 0)
     .sort((a, b) => b.score - a.score)
-    .map(item => item.product);
+    .map((item) => item.product);
 
-  // Apply limit if specified
   return limit ? filtered.slice(0, limit) : filtered;
 }
 

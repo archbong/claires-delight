@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { Product } from '@/typings';
+import { filterProductsBySearchTerm } from '@/lib/searchUtils';
 
 interface ProductsState {
   // Products data
@@ -63,6 +64,8 @@ export const useProductsStore = create<ProductsState>()(
           isLoading: false,
           error: null,
         });
+
+        get().filterProducts();
       },
 
       setSearchTerm: (term) => {
@@ -95,15 +98,9 @@ export const useProductsStore = create<ProductsState>()(
 
         let filtered = [...products];
 
-        // Filter by search term
+        // Filter by search term using shared helper
         if (searchTerm.trim()) {
-          const term = searchTerm.toLowerCase();
-          filtered = filtered.filter(
-            (product) =>
-              product.name.toLowerCase().includes(term) ||
-              product.description.toLowerCase().includes(term) ||
-              product.category?.some((cat) => cat.title.toLowerCase().includes(term))
-          );
+          filtered = filterProductsBySearchTerm(filtered, searchTerm);
         }
 
         // Filter by category
@@ -172,7 +169,7 @@ export const useProductsStore = create<ProductsState>()(
       name: 'products-storage',
       skipHydration: true,
       partialize: (state) => ({
-        searchTerm: state.searchTerm,
+        // searchTerm: state.searchTerm,
         sortOption: state.sortOption,
         selectedCategory: state.selectedCategory,
         priceRange: state.priceRange,

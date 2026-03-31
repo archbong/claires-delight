@@ -7,16 +7,23 @@ import Navbar from "@/app/components/header/navbar/Navbar";
 import EnhancedSpiceList from "@/app/components/Spice/EnhancedSpiceList";
 import SearchProductResults from "@/app/components/Spice/SearchProductResult";
 import { useProductsStore } from "@/app/store/productsStore";
+import { searchProducts } from "@/lib/searchUtils";
 import Banner from "@/app/components/banner/Banner";
+import { useEffect } from "react";
 
 export default function Page() {
   const searchTerm = useProductsStore((state) => state.searchTerm);
-  const searchResults = useProductsStore((state) => state.filteredProducts);
+  const products = useProductsStore((state) => state.products);
   const setSearchTerm = useProductsStore((state) => state.setSearchTerm);
+
+  const searchResults = searchTerm ? searchProducts(products, searchTerm) : products;
 
   const handleSearch = (query: string) => {
     setSearchTerm(query);
   };
+
+  console.log("Search Term:", searchTerm);
+  console.log("Search Results:", searchResults);
 
   return (
     <>

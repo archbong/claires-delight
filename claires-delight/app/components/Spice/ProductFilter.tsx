@@ -8,7 +8,7 @@ import SpiceTitle from "@/app/components/Spice/SpiceTitle";
 import { Product } from "@/typings";
 import { useProductsStore } from "@/app/store/productsStore";
 
-interface ProductFilterProps {
+interface ProductFilterProps { 
   onFilter: (filteredProducts: Product[]) => void;
 }
 
@@ -26,60 +26,11 @@ const ProductFilter: React.FC<ProductFilterProps> = ({ onFilter }) => {
 
   useEffect(() => {
     let filtered = [...products];
-
     if (isSingleSpiceChecked) {
       filtered = filtered.filter((product) =>
-        product.category?.some((cat) => cat.title === "Single Spices")
-      );
-    }
-
-    if (isMixedSpiceChecked) {
-      filtered = filtered.filter((product) =>
-        product.category?.some((cat) => cat.title === "Mixed Spices")
-      );
-    }
-
-    if (recentlyAdded) {
-      filtered.sort((a, b) => {
-        const dateA = new Date(a.createdAt || 0).getTime();
-        const dateB = new Date(b.createdAt || 0).getTime();
-        return dateB - dateA;
-      });
-    }
-
-    if (bestSelling) {
-      filtered.sort((a, b) => (b.reviewCount || 0) - (a.reviewCount || 0));
-    }
-
-    if (aToZ) {
-      filtered.sort((a, b) => a.name.localeCompare(b.name));
-    }
-
-    if (zToA) {
-      filtered.sort((a, b) => b.name.localeCompare(a.name));
-    }
-
-    if (isLow) {
-      filtered.sort((a, b) => a.price - b.price);
-    }
-
-    if (isHigh) {
-      filtered.sort((a, b) => b.price - a.price);
-    }
-
-    onFilter(filtered);
-  }, [
-    products,
-    isSingleSpiceChecked,
-    isMixedSpiceChecked,
-    recentlyAdded,
-    bestSelling,
-    aToZ,
-    zToA,
-    isLow,
-    isHigh,
-    onFilter,
-  ]);
+        product.category?.some((cat) => cat.title === "Single Spices"));
+    } if (isMixedSpiceChecked) { filtered = filtered.filter((product) => product.category?.some((cat) => cat.title === "Mixed Spices")); } if (recentlyAdded) { filtered.sort((a, b) => { const dateA = new Date(a.createdAt || 0).getTime(); const dateB = new Date(b.createdAt || 0).getTime(); return dateB - dateA; }); } if (bestSelling) { filtered.sort((a, b) => (b.reviewCount || 0) - (a.reviewCount || 0)); } if (aToZ) { filtered.sort((a, b) => a.name.localeCompare(b.name)); } if (zToA) { filtered.sort((a, b) => b.name.localeCompare(a.name)); } if (isLow) { filtered.sort((a, b) => a.price - b.price); } if (isHigh) { filtered.sort((a, b) => b.price - a.price); } onFilter(filtered);
+  }, [products, isSingleSpiceChecked, isMixedSpiceChecked, recentlyAdded, bestSelling, aToZ, zToA, isLow, isHigh, onFilter,]);
 
   return (
     <div className="pt-[4rem]">

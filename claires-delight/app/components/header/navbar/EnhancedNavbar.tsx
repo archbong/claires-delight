@@ -95,7 +95,8 @@ const EnhancedNavbar: React.FC<EnhancedNavbarProps> = ({ onSearch }) => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
         searchRef.current &&
-        !searchRef.current.contains(event.target as Node)
+        !searchRef.current.contains(event.target as Node) &&
+        !inputValue.trim()
       ) {
         setIsSearchOpen(false);
       }
@@ -103,7 +104,17 @@ const EnhancedNavbar: React.FC<EnhancedNavbarProps> = ({ onSearch }) => {
 
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  }, [inputValue]);
+
+  const handleInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    if (
+      searchRef.current &&
+      !searchRef.current.contains(e.relatedTarget as Node) &&
+      !inputValue.trim()
+    ) {
+      setIsSearchOpen(false);
+    }
+  };
 
   // Focus search input when opened
   useEffect(() => {
@@ -214,8 +225,10 @@ const EnhancedNavbar: React.FC<EnhancedNavbarProps> = ({ onSearch }) => {
 
   const handleClearSearch = () => {
     setInputValue("");
+    setSearchTerm("");
     updateSearchTerm("");
     localStorage.removeItem("searchTerm");
+    isSearchOpen && setIsSearchOpen(false);
 
     if (onSearch) {
       onSearch("");
@@ -227,13 +240,13 @@ const EnhancedNavbar: React.FC<EnhancedNavbarProps> = ({ onSearch }) => {
       {/* Enhanced Navbar with smooth transitions */}
       <header
         className={cn(
-  "fixed top-0 w-full z-50 transition-all duration-500 ease-out",
-  "backdrop-blur-md supports-backdrop-blur:bg-white/90",
-  isScrolled
-    ? "shadow-lg border-b border-gray-100"
-    : "border-b border-transparent",
-    "bg-white/95 hover:bg-green/65",
-)}  role="banner"
+          "fixed top-0 w-full z-50 transition-all duration-500 ease-out",
+          "backdrop-blur-md supports-backdrop-blur:bg-white/90",
+          isScrolled
+            ? "shadow-lg border-b border-gray-100"
+            : "border-b border-transparent",
+          "bg-white/95 hover:bg-green/65",
+        )} role="banner"
         aria-label="Main navigation"
       >
         <div className="responsive-container">
@@ -277,6 +290,7 @@ const EnhancedNavbar: React.FC<EnhancedNavbarProps> = ({ onSearch }) => {
                       type="text"
                       value={inputValue}
                       onChange={handleSearchChange}
+                      onBlur={handleInputBlur}
                       placeholder="Search spices..."
                       className="w-32 lg:w-48 border-none bg-transparent text-sm focus:outline-none focus:ring-0"
                       aria-label="Search products"
@@ -299,13 +313,13 @@ const EnhancedNavbar: React.FC<EnhancedNavbarProps> = ({ onSearch }) => {
                     </button>
 
                     {/* Search Suggestions */}
-                    <SearchSuggestions
+                    {/* <SearchSuggestions
                       suggestions={searchSuggestions}
                       searchTerm={inputValue}
                       isLoading={isSearchLoading}
                       isVisible={isSearchOpen && inputValue.length >= 2}
                       onSelectSuggestion={handleSuggestionSelect}
-                    />
+                    /> */}
                   </div>
                 ) : (
                   <button
@@ -355,9 +369,9 @@ const EnhancedNavbar: React.FC<EnhancedNavbarProps> = ({ onSearch }) => {
                   <button
                     type="submit"
                     className="btn w-[150px] h-[50px] bg-orange text-white"
-                    // disabled={loading}
+                  // disabled={loading}
                   >
-                    Contact Us 
+                    Contact Us
                   </button>
                 </Link>
               </div>
@@ -398,7 +412,10 @@ const EnhancedNavbar: React.FC<EnhancedNavbarProps> = ({ onSearch }) => {
       {/* Mobile Search Overlay */}
       <MobileSearchOverlay
         isOpen={isMobileSearchOpen}
-        onClose={() => setIsMobileSearchOpen(false)}
+        onClose={() => {
+          setIsMobileSearchOpen(false);
+          handleClearSearch();
+        }}
         searchTerm={inputValue}
         onSearchChange={setInputValue}
         suggestions={searchSuggestions}
