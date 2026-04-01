@@ -200,7 +200,7 @@ class DeviceDetection {
     const style = window.getComputedStyle(element);
     const width = parseInt(style.width) || 0;
     const height = parseInt(style.height) || 0;
-    const minSize = this.touchOptions.minTouchSize;
+    const minSize = this.touchOptions.minTouchSize ?? 44;
 
     if (width < minSize || height < minSize) {
       const padding = Math.max(0, (minSize - Math.min(width, height)) / 2);
@@ -215,7 +215,7 @@ class DeviceDetection {
    * Check if current device supports hover effects
    */
   public supportsHover(): boolean {
-    return !this.deviceInfo.isTouchDevice && this.touchOptions.hoverEffects;
+    return !this.deviceInfo.isTouchDevice && (this.touchOptions.hoverEffects ?? false);
   }
 
   /**

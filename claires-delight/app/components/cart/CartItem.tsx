@@ -41,8 +41,8 @@ export default function CartItemView({ item }: Readonly<Props>) {
       : "/placeholder.svg";
 
   return (
-    <ServiceCard className="w-full p-4 sm:p-5">
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-5 md:gap-6 place-content-center">
+    <ServiceCard className="p-1 px-5">
+      <div className="grid grid-cols-3">
         <Suspense fallback={<Loading />}>
           <div className="rounded-2xl p-1 flex md:block">
             <div className="relative w-32 h-32 sm:w-40 sm:h-40 overflow-hidden rounded-xl bg-lighterGreen border border-primaryGrey/40 shrink-0">
@@ -56,7 +56,7 @@ export default function CartItemView({ item }: Readonly<Props>) {
             </div>
           </div>
         </Suspense>
-        <div className="col-span-3 px-2 sm:px-3 md:px-0 flex flex-col gap-4">
+        <div className="col-span-2 px-2 sm:px-3 md:px-0 flex flex-col gap-4">
           <Subtitle title={item.product.name} />
 
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
@@ -101,7 +101,7 @@ export default function CartItemView({ item }: Readonly<Props>) {
             </p>
           </div>
 
-          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 pt-1">
+          <div className="flex flex-row sm:flex-row sm:justify-between sm:items-center gap-3 pt-1">
             <div>
               <p className="text-customBlack font-bold text-lg">
                 {formatNaira(item.product.price * item.quantity)}

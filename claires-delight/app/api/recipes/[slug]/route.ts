@@ -15,10 +15,11 @@ const splitList = (value: unknown): string[] => {
 
 export async function GET(
   _request: Request,
-  { params }: { params: { slug: string } },
+  { params }: { params: Promise<{ slug: string }> },
 ) {
   try {
-    const recipe = await getRecipe(params.slug);
+    const { slug } = await params;
+    const recipe = await getRecipe(slug);
     if (!recipe) {
       return NextResponse.json({ message: "Recipe not found" }, { status: 404 });
     }
@@ -31,12 +32,13 @@ export async function GET(
 
 export async function PUT(
   request: Request,
-  { params }: { params: { slug: string } },
+  { params }: { params: Promise<{ slug: string }> },
 ) {
   try {
+    const { slug } = await params;
     const existing =
-      (await prisma.recipe.findUnique({ where: { slug: params.slug }, select: { id: true } })) ??
-      (await prisma.recipe.findUnique({ where: { id: params.slug }, select: { id: true } }));
+      (await prisma.recipe.findUnique({ where: { slug: slug }, select: { id: true } })) ??
+      (await prisma.recipe.findUnique({ where: { id: slug }, select: { id: true } }));
 
     if (!existing) {
       return NextResponse.json({ message: "Recipe not found" }, { status: 404 });
@@ -81,12 +83,13 @@ export async function PUT(
 
 export async function DELETE(
   _request: Request,
-  { params }: { params: { slug: string } },
+  { params }: { params: Promise<{ slug: string }> },
 ) {
   try {
+    const { slug } = await params;
     const existing =
-      (await prisma.recipe.findUnique({ where: { slug: params.slug }, select: { id: true } })) ??
-      (await prisma.recipe.findUnique({ where: { id: params.slug }, select: { id: true } }));
+      (await prisma.recipe.findUnique({ where: { slug: slug }, select: { id: true } })) ??
+      (await prisma.recipe.findUnique({ where: { id: slug }, select: { id: true } }));
 
     if (!existing) {
       return NextResponse.json({ message: "Recipe not found" }, { status: 404 });

@@ -101,7 +101,7 @@ export default function PostList() {
         ]}
       />
 
-      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 mt-4 justify-items-center">
+      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mt-4 justify-items-center">
         {paginatedPosts.map((post: BlogPost) => (
           <Suspense key={post._id ?? post.slug}>
             <PostCard post={post} />

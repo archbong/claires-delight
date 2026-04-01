@@ -84,3 +84,9 @@ export interface Recipe {
   servings?: number;
   difficulty?: 'easy' | 'medium' | 'hard';
 }
+
+export interface SocialLinkProps {
+    href: string;
+    image: StaticImageData;
+    alt: string;
+}

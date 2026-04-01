@@ -1,4 +1,5 @@
-import { NextResponse } from "next/server";
+import {NextRequest, NextResponse } from "next/server";
+
 import { prisma } from "@/lib/prisma";
 
 const mapProduct = (product: {
@@ -57,34 +58,35 @@ const slugify = (value: string) =>
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
 
-const getProductBySlugOrId = async (slug: string) =>
-  (await prisma.product.findUnique({
-    where: { slug },
-    include: {
+    const getProductBySlugOrId = async (slug: string) => {
+  const [bySlug, byId] = await Promise.all([
+    prisma.product.findUnique({ where: { slug }, include: {
       categories: true,
       healthBenefits: true,
       culinaryUses: true,
       images: true,
       reviews: { select: { rating: true } },
-    },
-  })) ??
-  (await prisma.product.findUnique({
-    where: { id: slug },
-    include: {
-      categories: true,
+    } }),
+    prisma.product.findUnique({ where: { id: slug }, include: {
+       categories: true,
       healthBenefits: true,
       culinaryUses: true,
       images: true,
       reviews: { select: { rating: true } },
-    },
-  }));
+    } }),
+  ]);
+
+  return bySlug ?? byId;
+};
+
 
 export async function GET(
-  _request: Request,
-  { params }: { params: { slug: string } },
+  _request: NextRequest,
+  { params }: { params: Promise<{ slug: string }> },
 ) {
   try {
-    const product = await getProductBySlugOrId(params.slug);
+    const { slug } = await params;
+    const product = await getProductBySlugOrId(slug);
     if (!product) {
       return NextResponse.json({ message: "Product not found" }, { status: 404 });
     }
@@ -96,11 +98,12 @@ export async function GET(
 }
 
 export async function PUT(
-  request: Request,
-  { params }: { params: { slug: string } },
+  request: NextRequest,
+  { params }: { params: Promise<{ slug: string }> },
 ) {
   try {
-    const existing = await getProductBySlugOrId(params.slug);
+    const {slug} = await params;
+    const existing = await getProductBySlugOrId(slug);
     if (!existing) {
       return NextResponse.json({ message: "Product not found" }, { status: 404 });
     }
@@ -169,11 +172,12 @@ export async function PUT(
 }
 
 export async function DELETE(
-  _request: Request,
-  { params }: { params: { slug: string } },
+  _request: NextRequest,
+  { params }: { params: Promise<{ slug: string }> },
 ) {
   try {
-    const existing = await getProductBySlugOrId(params.slug);
+    const { slug } = await params;
+    const existing = await getProductBySlugOrId(slug);
     if (!existing) {
       return NextResponse.json({ message: "Product not found" }, { status: 404 });
     }

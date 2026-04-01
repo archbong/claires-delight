@@ -50,7 +50,7 @@ export default function CartView() {
           />
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 place-content-center">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 place-content-center mb-20">
           <div className="col-span-2 px-5">
             <SpiceTitle title={`Spices in cart (${cartCount})`} />
             {cartItems.map((item: CartItem) => (

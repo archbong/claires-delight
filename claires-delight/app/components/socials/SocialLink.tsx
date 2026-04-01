@@ -1,6 +1,5 @@
+import { SocialLinkProps } from "@/typings";
 import Image from "next/image";
-import { SocialLinkProps } from "../../../interfaces/ISocialLinkProps";
-
 
 const SocialLink: React.FC<SocialLinkProps> = ({
     href,

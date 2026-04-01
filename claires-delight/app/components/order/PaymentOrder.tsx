@@ -1,6 +1,8 @@
 "use client";
 
-import Link from "next/link";
+"use client";
+
+import { useFlutterwave, closePaymentModal } from "flutterwave-react-v3";
 import { redirect, useRouter } from "next/navigation";
 import BodyWrapper from "@/app/components/layout/BodyWrapper";
 import Subtitle from "@/app/components/typography/Subtitle";
@@ -10,6 +12,8 @@ import ServiceCard from "@/app/components/LandingPage/our-service/ServiceCard";
 import { useCartStore } from "@/app/store/cartStore";
 import { formatNaira } from "@/lib/utils/currency";
 import Breadcrumb from "../Breadcrumb";
+import clairesDelight from "@/public/image/Logo.svg";
+
 
 export default function PaymentOrder() {
   const router = useRouter();
@@ -18,10 +22,51 @@ export default function PaymentOrder() {
   const totalAmount = useCartStore((state) => state.totalAmount);
   const clearCart = useCartStore((state) => state.clearCart);
 
+  const config = {
+  public_key: process.env.NEXT_PUBLIC_FLW_PUBLIC_KEY!,
+  tx_ref: `tx-${Date.now()}`, // unique transaction reference
+  amount: totalAmount,
+  currency: "NGN",
+  payment_options: "card,banktransfer,ussd",
+  customer: {
+    email: "customer@email.com", // replace later
+    phone_number: "08000000000",
+    name: "Guest Customer",
+  },
+  customizations: {
+    title: "Claire's Delight - Premium Spices & Culinary Inspirations",
+    description: "Payment for items in cart",
+    logo: clairesDelight,
+  },
+};
+
+const handleFlutterPayment = useFlutterwave(config);
+
+  // const handlePlaceOrder = () => {
+  //   clearCart();
+  //   router.push("/shop-spices");
+  // };
+
   const handlePlaceOrder = () => {
-    clearCart();
-    router.push("/shop-spices");
-  };
+  handleFlutterPayment({
+    callback: (response) => {
+      console.log("Payment response:", response);
+
+      if (response.status === "successful") {
+        // ⚠️ This is NOT fully secure without backend verification
+        clearCart();
+        router.push("/shop-spices");
+      } else {
+        alert("Payment was not successful");
+      }
+
+      closePaymentModal();
+    },
+    onClose: () => {
+      console.log("Payment closed");
+    },
+  });
+};
 
   if (!items.length) {
     // return (
