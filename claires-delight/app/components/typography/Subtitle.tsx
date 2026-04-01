@@ -16,7 +16,7 @@ export default function Subtitle({ icon, title }: Readonly<SubtitleProps>){
               width={40}
               height={40}
             />) : null }
-            <div className=" text-[17px] md:text-2xl font-semibold">{title}</div>
+            <div className=" text-base md:text-2xl font-semibold">{title}</div>
         </div>
     );
 }

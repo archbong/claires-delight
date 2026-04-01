@@ -99,7 +99,7 @@ export default function Page() {
               <form className="form-control" onSubmit={handleSubmit}>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-2 py-3 w-full">
                   <input
-                    className="border-teritaryGrey focus:border-teritaryGrey rounded-md py-3"
+                    className="border border-[#E2E8F0] focus:border-teritaryGrey rounded-md p-3"
                     id="firstname"
                     name="firstname"
                     type="text"
@@ -110,7 +110,7 @@ export default function Page() {
                     }
                   />
                   <input
-                    className="border-teritaryGrey focus:border-teritaryGrey rounded-md py-3"
+                    className="border border-[#E2E8F0] focus:border-teritaryGrey rounded-md p-3"
                     id="lastname"
                     name="lastname"
                     type="text"
@@ -123,7 +123,7 @@ export default function Page() {
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-2 py-3 w-full">
                   <input
-                    className="border-teritaryGrey focus:border-teritaryGrey rounded-md py-3"
+                    className="border border-[#E2E8F0] focus:border-teritaryGrey rounded-md p-3"
                     id="email"
                     name="email"
                     type="email"
@@ -134,7 +134,7 @@ export default function Page() {
                     }
                   />
                   <input
-                    className="border-teritaryGrey focus:border-teritaryGrey rounded-md py-3"
+                    className="border border-[#E2E8F0] focus:border-teritaryGrey rounded-md p-3"
                     id="contact"
                     name="contact"
                     type="text"
@@ -146,7 +146,7 @@ export default function Page() {
                   />
                 </div>
                 <textarea
-                  className="textarea border-teritaryGrey focus:border-teritaryGrey w-full h-40"
+                  className="textarea border border-[#E2E8F0] focus:border-teritaryGrey w-full h-40 p-3"
                   placeholder="Message"
                   value={formData.message}
                   onChange={(e) =>

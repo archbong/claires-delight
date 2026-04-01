@@ -91,7 +91,7 @@ enum ContentType {
   ANNOUNCEMENT
 }
 
-// ==================== MODELS ====================
+
 model User {
   id        String   @id @default(uuid())
   username  String   @unique
@@ -286,6 +286,15 @@ model RecipeDietaryRestriction {
   recipeId    String
   recipe      Recipe             @relation(fields: [recipeId], references: [id])
   restriction DietaryRestriction
+}
+
+model Tip {
+  id        String   @id @default(cuid())
+  title     String
+  slug      String   @unique
+  content   String
+  tags      RecipeTag[]
+  createdAt DateTime @default(now())
 }
 
 model Contact {

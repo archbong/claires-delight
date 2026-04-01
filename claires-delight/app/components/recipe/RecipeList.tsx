@@ -36,7 +36,7 @@ if (!recipes.length) {
   return (
     <BodyWrapper>
       <div className="flex justify-center items-center">
-        <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4 xl:grid-cols-2">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 xl:grid-cols-2">
           {paginatedRecipes.map((recipe: Recipe) => (
             <Suspense key={recipe._id}>
               <RecipeCard recipe={recipe} />

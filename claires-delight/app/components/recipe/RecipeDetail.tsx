@@ -14,16 +14,17 @@ export default function RecipeDetail({ item }: any) {
   const productSlice = products.slice(0, 6);
   const ingredients = Array.isArray(item?.ingredients) ? item.ingredients : [];
   const methods = Array.isArray(item?.method) ? item.method : [];
+  // const tips = Array.isArray(item.tip) ? item.tip : []
 
   return (
     <>
-      <section className="rounded-2xl bg-white p-4 sm:p-6 lg:p-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
+      <section className="rounded-2xl p-2 lg:p-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 lg:gap-10 items-start">
           <Suspense>
             <Image
               src={item?.image}
               alt={item?.title}
-              width={800}
+              width={500}
               height={500}
               loading="lazy"
               className="rounded-2xl"
@@ -58,9 +59,21 @@ export default function RecipeDetail({ item }: any) {
             {/* Method */}
             <div>
               <h3 className="font-bold text-lg text-customBlack mb-2">Method:</h3>
-              <p className="text-sm text-tertiaryGrey leading-7">
-                {methods.join(" ")}
-              </p>
+              <ol className="space-y-1 text-sm text-tertiaryGrey leading-6 list-decimal list-inside">
+                {methods.map((method: string, index: number) => (
+                  <li key={index}>{method},</li>
+                ))}
+              </ol>
+            </div>
+
+            {/* Tips */}
+            <div>
+              <h3 className="font-bold text-lg text-customBlack mb-2">Tips:</h3>
+              <ol className="space-y-1 text-sm text-tertiaryGrey leading-6 list-disc list-inside">
+                {methods.map((method: string, index: number) => (
+                  <li key={index}>{method},</li>
+                ))}
+              </ol>
             </div>
           </div>
         </div>

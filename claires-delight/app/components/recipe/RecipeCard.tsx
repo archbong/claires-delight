@@ -7,7 +7,7 @@ import { FaArrowRightLong } from "react-icons/fa6";
 
 export default function RecipeCard({ recipe }: any) {
   return (
-    <div className="card md:w-[35rem] bg-base-100 shadow-xl rounded-b-3xl m-5">
+    <div className="card md:w-[35rem] bg-base-100 shadow-xl rounded-b-3xl">
       <Suspense fallback={<Loading />}>
         <figure>
           <Image

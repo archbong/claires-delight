@@ -9,7 +9,6 @@ import SearchProductResults from "@/app/components/Spice/SearchProductResult";
 import { useProductsStore } from "@/app/store/productsStore";
 import { searchProducts } from "@/lib/searchUtils";
 import Banner from "@/app/components/banner/Banner";
-import { useEffect } from "react";
 
 export default function Page() {
   const searchTerm = useProductsStore((state) => state.searchTerm);
@@ -21,9 +20,6 @@ export default function Page() {
   const handleSearch = (query: string) => {
     setSearchTerm(query);
   };
-
-  console.log("Search Term:", searchTerm);
-  console.log("Search Results:", searchResults);
 
   return (
     <>
