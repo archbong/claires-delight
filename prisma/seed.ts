@@ -21,32 +21,64 @@ async function main() {
 
   // Clear existing data (optional - be careful in production!)
   console.log("🧹 Clearing existing data...");
-  await prisma.$transaction([
-    prisma.orderItem.deleteMany(),
-    prisma.order.deleteMany(),
-    prisma.cartItem.deleteMany(),
-    prisma.cart.deleteMany(),
-    prisma.customerReview.deleteMany(),
-    prisma.productHealthBenefit.deleteMany(),
-    prisma.productCulinaryUse.deleteMany(),
-    prisma.productImage.deleteMany(),
-    prisma.productVariant.deleteMany(),
-    prisma.product.deleteMany(),
-    prisma.category.deleteMany(),
-    prisma.recipeIngredient.deleteMany(),
-    prisma.recipeMethodStep.deleteMany(),
-    prisma.recipeTag.deleteMany(),
-    prisma.recipeSpice.deleteMany(),
-    prisma.recipeDietaryRestriction.deleteMany(),
-    prisma.recipe.deleteMany(),
-    prisma.contact.deleteMany(),
-    prisma.postTag.deleteMany(),
-    prisma.post.deleteMany(),
-    prisma.postCategory.deleteMany(),
-    prisma.userToken.deleteMany(),
-    prisma.profile.deleteMany(),
-    prisma.user.deleteMany(),
-  ]);
+  // await prisma.$transaction([
+  //   prisma.orderItem.deleteMany(),
+  //   prisma.order.deleteMany(),
+  //   prisma.cartItem.deleteMany(),
+  //   prisma.cart.deleteMany(),
+  //   prisma.customerReview.deleteMany(),
+  //   prisma.productHealthBenefit.deleteMany(),
+  //   prisma.productCulinaryUse.deleteMany(),
+  //   prisma.productImage.deleteMany(),
+  //   prisma.productVariant.deleteMany(),
+  //   prisma.product.deleteMany(),
+  //   prisma.category.deleteMany(),
+  //   prisma.recipeIngredient.deleteMany(),
+  //   prisma.recipeMethodStep.deleteMany(),
+  //   prisma.recipeTag.deleteMany(),
+  //   prisma.recipeSpice.deleteMany(),
+  //   prisma.recipeDietaryRestriction.deleteMany(),
+  //   prisma.recipe.deleteMany(),
+  //   prisma.contact.deleteMany(),
+  //   prisma.postTag.deleteMany(),
+  //   prisma.post.deleteMany(),
+  //   prisma.postCategory.deleteMany(),
+  //   prisma.userToken.deleteMany(),
+  //   prisma.profile.deleteMany(),
+  //   prisma.user.deleteMany(),
+  // ]);
+  await prisma.orderItem.deleteMany();
+  await prisma.order.deleteMany();
+
+  await prisma.cartItem.deleteMany();
+  await prisma.cart.deleteMany();
+
+  await prisma.customerReview.deleteMany();
+
+  await prisma.productVariant.deleteMany();
+  await prisma.productImage.deleteMany();
+  await prisma.productHealthBenefit.deleteMany();
+  await prisma.productCulinaryUse.deleteMany();
+
+  await prisma.product.deleteMany();
+  await prisma.category.deleteMany();
+
+  await prisma.recipeIngredient.deleteMany();
+  await prisma.recipeMethodStep.deleteMany();
+  await prisma.recipeTag.deleteMany();
+  await prisma.recipeSpice.deleteMany();
+  await prisma.recipeDietaryRestriction.deleteMany();
+  await prisma.recipe.deleteMany();
+
+  await prisma.postTag.deleteMany();
+  await prisma.post.deleteMany();
+  await prisma.postCategory.deleteMany();
+
+  await prisma.contact.deleteMany();
+
+  await prisma.userToken.deleteMany();
+  await prisma.profile.deleteMany();
+  await prisma.user.deleteMany();
   console.log("✅ Existing data cleared");
 
   // Create Users

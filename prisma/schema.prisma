@@ -272,6 +272,8 @@ model RecipeTag {
   recipeId String
   recipe   Recipe @relation(fields: [recipeId], references: [id])
   tag      String
+
+  tips Tip[]
 }
 
 model RecipeSpice {
