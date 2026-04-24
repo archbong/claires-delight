@@ -384,6 +384,7 @@ model Order {
   billingAddress  String?
   paymentMethod  PaymentMethod
   paymentStatus  PaymentStatus @default(PENDING)
+  paymentReference String? @unique
   createdAt      DateTime      @default(now())
   updatedAt      DateTime      @updatedAt
 

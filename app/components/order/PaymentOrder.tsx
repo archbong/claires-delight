@@ -5,14 +5,13 @@
 import { useFlutterwave, closePaymentModal } from "flutterwave-react-v3";
 import { redirect, useRouter } from "next/navigation";
 import BodyWrapper from "@/app/components/layout/BodyWrapper";
-import Subtitle from "@/app/components/typography/Subtitle";
 import SpiceTitle from "@/app/components/Spice/SpiceTitle";
 import Button from "@/app/components/button/Button";
 import ServiceCard from "@/app/components/LandingPage/our-service/ServiceCard";
 import { useCartStore } from "@/app/store/cartStore";
 import { formatNaira } from "@/lib/utils/currency";
 import Breadcrumb from "../Breadcrumb";
-import clairesDelight from "@/public/image/Logo.svg";
+import clairesDelight from "@/public/logo.svg";
 
 
 export default function PaymentOrder() {
@@ -22,51 +21,64 @@ export default function PaymentOrder() {
   const totalAmount = useCartStore((state) => state.totalAmount);
   const clearCart = useCartStore((state) => state.clearCart);
 
-  const config = {
-  public_key: process.env.NEXT_PUBLIC_FLW_PUBLIC_KEY!,
-  tx_ref: `tx-${Date.now()}`, // unique transaction reference
-  amount: totalAmount,
-  currency: "NGN",
-  payment_options: "card,banktransfer,ussd",
-  customer: {
-    email: "customer@email.com", // replace later
-    phone_number: "08000000000",
-    name: "Guest Customer",
-  },
-  customizations: {
-    title: "Claire's Delight - Premium Spices & Culinary Inspirations",
-    description: "Payment for items in cart",
-    logo: clairesDelight,
-  },
-};
 
-const handleFlutterPayment = useFlutterwave(config);
-
-  // const handlePlaceOrder = () => {
-  //   clearCart();
-  //   router.push("/shop-spices");
-  // };
 
   const handlePlaceOrder = () => {
-  handleFlutterPayment({
-    callback: (response) => {
-      console.log("Payment response:", response);
+    const config = {
+      public_key: process.env.NEXT_PUBLIC_FLW_PUBLIC_KEY!,
+      tx_ref: `tx-${Date.now()}`, // unique transaction reference
+      amount: totalAmount,
+      currency: "NGN",
+      payment_options: "card,banktransfer,ussd",
+      redirect_url: `${window.location.origin}/payment/callback`,
 
-      if (response.status === "successful") {
-        // ⚠️ This is NOT fully secure without backend verification
-        clearCart();
-        router.push("/shop-spices");
-      } else {
-        alert("Payment was not successful");
-      }
+      customer: {
+        email: "customer@email.com", // replace later
+        phone_number: "08000000000",
+        name: "Guest Customer",
+      },
+      customizations: {
+        title: "Claire's Delight - Premium Spices & Culinary Inspirations",
+        description: "Payment for items in cart",
+        logo: clairesDelight,
+      },
+    };
+    const handleFlutterPayment = useFlutterwave(config);
 
-      closePaymentModal();
-    },
-    onClose: () => {
-      console.log("Payment closed");
-    },
-  });
-};
+    handleFlutterPayment({
+      callback: async (response) => {
+        closePaymentModal();
+
+        try {
+          const verify = await fetch("/api/payments/verify", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              transaction_id: response.transaction_id,
+              tx_ref: response.tx_ref,
+            }),
+          });
+
+          const result = await verify.json();
+
+          if (result.success) {
+            clearCart();
+            router.push("/shop-spices");
+          } else {
+            alert("Payment verification failed");
+          }
+        } catch (err) {
+          console.error("Verification error:", err);
+          alert("Something went wrong verifying payment");
+        }
+      },
+      onClose: () => {
+        console.log("Payment closed");
+      },
+    });
+  };
 
   if (!items.length) {
     // return (
@@ -88,12 +100,12 @@ const handleFlutterPayment = useFlutterwave(config);
   return (
     <BodyWrapper>
       <Breadcrumb
-              items={[
-                { label: "Payment Process", href: "/payment-proces" },
-                { label: "Process payment", href: "/payment-process" },
-                { label: "Payment Process" },
-              ]}
-            />
+        items={[
+          { label: "Payment Process", href: "/payment-proces" },
+          { label: "Process payment", href: "/payment-process" },
+          { label: "Payment Process" },
+        ]}
+      />
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2">
