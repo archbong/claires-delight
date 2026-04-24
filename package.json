@@ -11,7 +11,8 @@
     "start": "next start",
     "lint": "eslint",
     "seed": "tsx prisma/seed.ts",
-    "seed:reset": "npx prisma migrate reset && npm run seed"
+    "seed:reset": "npx prisma migrate reset && npm run seed",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.4.1",
