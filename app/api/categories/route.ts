@@ -7,7 +7,7 @@ export async function GET() {
       orderBy: { title: "asc" },
       select: { title: true },
     });
-    return NextResponse.json(categories.map((category) => category.title), {
+    return NextResponse.json(categories.map((category: { title: string }) => category.title), {
       status: 200,
     });
   } catch (error) {
