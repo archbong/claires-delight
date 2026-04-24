@@ -72,11 +72,11 @@ const getErrorMessage = (error: unknown) =>
 
 const mapProduct = (product: ProductWithRelations) => {
   const ratings = (product.reviews ?? [])
-    .map((review) => review.rating)
+    .map((review: ProductReview) => review.rating)
     .filter((rating: number | null) => typeof rating === "number") as number[];
   const averageRating =
     ratings.length > 0
-      ? Number((ratings.reduce((sum, value) => sum + value, 0) / ratings.length).toFixed(1))
+      ? Number((ratings.reduce((sum: number, value: number) => sum + value, 0) / ratings.length).toFixed(1))
       : undefined;
 
   return {
@@ -84,14 +84,14 @@ const mapProduct = (product: ProductWithRelations) => {
     name: product.name,
     slug: product.slug,
     description: product.description,
-    category: (product.categories ?? []).map((category) => ({
+    category: (product.categories ?? []).map((category: ProductCategory) => ({
       title: category.title,
       slug: category.slug,
       stock: category.stock,
     })),
     origin: product.origin,
-    healthBenefit: (product.healthBenefits ?? []).map((item) => item.benefit),
-    culinaryUses: (product.culinaryUses ?? []).map((item) => item.use),
+    healthBenefit: (product.healthBenefits ?? []).map((item: ProductHealthBenefit) => item.benefit),
+    culinaryUses: (product.culinaryUses ?? []).map((item: ProductCulinaryUse) => item.use),
     price: product.price,
     stock: product.stock,
     images: product.images?.[0]?.url ?? null,
@@ -109,13 +109,13 @@ const mapRecipe = (recipe: RecipeWithRelations) => ({
   slug: recipe.slug,
   description: recipe.description,
   image: recipe.image,
-  ingredients: (recipe.ingredients ?? []).map((item) => item.name),
+  ingredients: (recipe.ingredients ?? []).map((item: RecipeIngredient) => item.name),
   method: [...(recipe.methodSteps ?? [])]
-    .sort((a, b) => a.order - b.order)
-    .map((item) => item.step),
+    .sort((a: RecipeMethodStep, b: RecipeMethodStep) => a.order - b.order)
+    .map((item: RecipeMethodStep) => item.step),
   instructions: [...(recipe.methodSteps ?? [])]
-    .sort((a, b) => a.order - b.order)
-    .map((item) => item.step),
+    .sort((a: RecipeMethodStep, b: RecipeMethodStep) => a.order - b.order)
+    .map((item: RecipeMethodStep) => item.step),
   difficulty: (recipe.difficulty?.toLowerCase?.() as "easy" | "medium" | "hard" | undefined),
   servings: recipe.servings,
   cookTime: recipe.cookingTime,
@@ -128,7 +128,7 @@ const hydrateRecipeRelations = async (recipes: RecipeBase[]): Promise<RecipeWith
     return [];
   }
 
-  const recipeIds = recipes.map((recipe) => recipe.id);
+  const recipeIds = recipes.map((recipe: RecipeBase) => recipe.id);
 
   const [ingredients, methodSteps] = await Promise.all([
     prisma.recipeIngredient.findMany({
@@ -155,7 +155,7 @@ const hydrateRecipeRelations = async (recipes: RecipeBase[]): Promise<RecipeWith
     stepsByRecipe.set(step.recipeId, list);
   }
 
-  return recipes.map((recipe) => ({
+  return recipes.map((recipe: RecipeBase) => ({
     ...recipe,
     ingredients: ingredientsByRecipe.get(recipe.id) ?? [],
     methodSteps: stepsByRecipe.get(recipe.id) ?? [],
@@ -177,7 +177,7 @@ export const getProduct = async () => {
       orderBy: { createdAt: "desc" as const },
     });
 
-    return products.map((product) => mapProduct(product as ProductWithRelations));
+    return products.map((product: ProductWithRelations) => mapProduct(product));
   } catch (error: unknown) {
     console.error(`Error getting product data: ${getErrorMessage(error)}`);
     return [];
